@@ -13,7 +13,7 @@ class SendSmsNowRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class SendSmsNowRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'recipient' => 'required|numeric|digits:10',
+            'body' => 'required|string|min:1|max:160'
         ];
     }
 }

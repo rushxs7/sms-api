@@ -24,7 +24,8 @@ class BulkSendSmsNowRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'recipients' => 'required|array',
+            'body' => 'required|min:1|max:160',
         ];
     }
 }

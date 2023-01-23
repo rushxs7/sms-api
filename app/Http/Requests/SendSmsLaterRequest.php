@@ -24,7 +24,9 @@ class SendSmsLaterRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'recipient' => 'required|numeric|digits:10',
+            'body' => 'required|string|min:1|max:160',
+            'datetime' => 'required|datetime|laterthannow'
         ];
     }
 }

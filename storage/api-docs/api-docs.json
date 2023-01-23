@@ -1,0 +1,199 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Datasur SMS API",
+        "version": "0.6 alpha"
+    },
+    "paths": {
+        "/api": {},
+        "/api/sms/send/now": {
+            "post": {
+                "summary": "Sends SMS now",
+                "operationId": "9ff0b646c6ca062894a73f23c8ff8528",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "recipient": {
+                                        "type": "integer"
+                                    },
+                                    "body": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "recipient": 5977654321,
+                                    "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/sms/send/later": {
+            "post": {
+                "summary": "Sends SMS later",
+                "operationId": "296a92a6e5262443ea76cf05d55204f9",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "recipient": {
+                                        "type": "integer"
+                                    },
+                                    "body": {
+                                        "type": "string"
+                                    },
+                                    "datetime": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "recipient": 5977654321,
+                                    "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
+                                    "datetime": "1975-12-25 14:15:16"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/sms/cancel/{smsUuid}": {
+            "post": {
+                "summary": "Cancel an SMS by providing SMS Uuid",
+                "operationId": "70537cac5b6b0bd8a826f349c275652d",
+                "parameters": [
+                    {
+                        "name": "smsUuid",
+                        "in": "path",
+                        "description": "SMS Uuid parameter",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "uuid": {
+                                "summary": "An SMS UUID value.",
+                                "value": "0006faf6-7a61-426c-9034-579f2cfcfa83"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/sms/bulksend/now": {
+            "post": {
+                "summary": "Sends SMS to multiple receipients now",
+                "operationId": "bf13256931dcd25756dacdebffc7990a",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "recipients": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "body": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "recipients": [
+                                        5977654321,
+                                        5971234567,
+                                        5978765432
+                                    ],
+                                    "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/sms/bulksend/later": {
+            "post": {
+                "summary": "Sends SMS to multiple receipients later",
+                "operationId": "dcece7b694138057d4c68ecd0be3216f",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "recipients": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "body": {
+                                        "type": "string"
+                                    },
+                                    "datetime": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "recipients": [
+                                        5977654321,
+                                        5971234567,
+                                        5978765432
+                                    ],
+                                    "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
+                                    "datetime": "1975-12-25 14:15:16"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
