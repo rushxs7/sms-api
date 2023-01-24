@@ -6,6 +6,116 @@
     },
     "paths": {
         "/api": {},
+        "/api/login": {
+            "post": {
+                "summary": "Attempt user login by providing email and password. Bearer token is returned.",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "email": "johndoe@contoso.com",
+                                    "password": "contoso123"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/me": {
+            "get": {
+                "summary": "View details of current signed in user.",
+                "operationId": "9d9bc556f927575aa492a88c28fe5908",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/history": {
+            "get": {
+                "summary": "View send-history of signed-in user",
+                "operationId": "2c91f335de85204f3ae1465ff34e29d2",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/history/{smsUuid}": {
+            "get": {
+                "summary": "View details of an SMS by providing Uuid",
+                "operationId": "0ad70b8fc07f0c7f97ee2f4632f165de",
+                "parameters": [
+                    {
+                        "name": "smsUuid",
+                        "in": "path",
+                        "description": "SMS Uuid parameter",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "uuid": {
+                                "summary": "An SMS UUID value.",
+                                "value": "0006faf6-7a61-426c-9034-579f2cfcfa83"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/history/{smsUuid}/isSent": {
+            "get": {
+                "summary": "Validate if an SMS has been sent by sending the SMS Uuid",
+                "operationId": "e80d1427c0c940f7df6e735f0eccbf42",
+                "parameters": [
+                    {
+                        "name": "smsUuid",
+                        "in": "path",
+                        "description": "SMS Uuid parameter",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "uuid": {
+                                "summary": "An SMS UUID value.",
+                                "value": "0006faf6-7a61-426c-9034-579f2cfcfa83"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/api/sms/send/now": {
             "post": {
                 "summary": "Sends SMS now",
@@ -177,6 +287,34 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/bulksend/cancel/{smsUuid}": {
+            "post": {
+                "summary": "Cancel a bulk send by providing Uuid of assignment",
+                "operationId": "2b8767c0abae04d314e1da9c5c0c5369",
+                "parameters": [
+                    {
+                        "name": "bulkUuid",
+                        "in": "path",
+                        "description": "Bulk Uuid parameter",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "uuid": {
+                                "summary": "A bulk UUID value.",
+                                "value": "0006faf6-7a61-426c-9034-579f2cfcfa83"
+                            }
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"

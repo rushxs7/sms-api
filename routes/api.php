@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::post('/cancel/{smsUuid}', [SmsController::class, 'sendLater'])->name('sms.sendlater');
         Route::post('/bulksend/now', [SmsController::class, 'bulkSendNow'])->name('sms.bulksendnow');
         Route::post('/bulksend/later', [SmsController::class, 'bulkSendLater'])->name('sms.bulksendlater');
+        Route::post('/bulksend/cancel/{bulkUuid}', [SmsController::class, 'bulkSendLater'])->name('sms.bulksendlater');
     });
 
     Route::prefix('/history')->group(function() {

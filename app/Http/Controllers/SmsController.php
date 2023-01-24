@@ -175,7 +175,24 @@ class SmsController extends Controller
         // body: required|min:1|max:160
         // datetime: required|datetime|laterthannow
     }
-
+    /**
+     * @OA\Post(
+     *     path="/api/bulksend/cancel/{smsUuid}",
+     *     summary="Cancel a bulk send by providing Uuid of assignment",
+     *     @OA\Parameter(
+     *         description="Bulk Uuid parameter",
+     *         in="path",
+     *         name="bulkUuid",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="uuid", value="0006faf6-7a61-426c-9034-579f2cfcfa83", summary="A bulk UUID value."),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     )
+     * )
+     */
     public function cancelBulk($bulkUuid, Request $request)
     {}
 }
