@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->group(function() {
-    Route::get('/me', [AuthController::class, 'me'])->name('me');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/me', [AuthController::class, 'me']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::prefix('/sms')->group(function() {
         Route::post('/send/now', [SmsController::class, 'sendNow'])->name('sms.sendnow');
@@ -37,4 +37,4 @@ Route::middleware('auth:sanctum')->group(function() {
     });
 });
 
-Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
