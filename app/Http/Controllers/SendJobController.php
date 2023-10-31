@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\SendJob;
+use App\Models\SMSMessage;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
 
 class SendJobController extends Controller
 {
@@ -14,7 +18,9 @@ class SendJobController extends Controller
      */
     public function index()
     {
-        //
+        $jobs = SendJob::with('messages')->paginate(20);
+
+        return view('smsservice.index');
     }
 
     /**
@@ -24,7 +30,7 @@ class SendJobController extends Controller
      */
     public function create()
     {
-        //
+        return view('smsservice.create');
     }
 
     /**
@@ -35,7 +41,41 @@ class SendJobController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'type' => 'required',
+            'bulk' => 'boolean',
+            'recipients' => 'required_if:bulk,1|array',
+            'message' => 'required',
+            'scheduled_at' => 'required_if:type,scheduled|date',
+        ]);
+
+        $count = 0;
+        foreach ($request->recipients as $phoneNumber)
+        {
+            $count++;
+            if (!preg_match('/^[0-9]{10}$/', $phoneNumber)) {
+                $error = ValidationException::withMessages(['recipients' => ordinalize($count) . 'phone number is not valid. Make sure the phone number contains 10 digits.']);
+                return throw $error;
+            }
+        }
+
+        $job = SendJob::create([
+            'type' => $request->type,
+            'bulk' => $request->bulk ? true : false,
+            'message' => $request->message,
+            'scheduled_at' => Carbon::parse($request->scheduled_at),
+        ]);
+
+        foreach($request->recipients as $phoneNumber)
+        {
+            SMSMessage::create([
+                'job_id' => $job->id,
+                'recipient' => $phoneNumber,
+                'message' => $request->message
+            ]);
+        }
+
+        return Redirect::back()->with('success', 'New send job created succesfully.');
     }
 
     /**
