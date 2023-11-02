@@ -18,9 +18,9 @@ class SendJobController extends Controller
      */
     public function index()
     {
-        $jobs = SendJob::with('messages')->paginate(20);
+        $sendJobs = SendJob::with('messages')->paginate(12);
 
-        return view('smsservice.index');
+        return view('smsservice.index', ['sendJobs' => $sendJobs]);
     }
 
     /**

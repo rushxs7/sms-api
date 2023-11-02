@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SendJob;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -21,8 +24,18 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
+        $user = User::findOrFail(Auth::id());
+        $unreadNotifications = $user->unreadNotifications;
+        $jobs = SendJob::with(['messages'])
+            ->latest()
+            ->take(5)
+            ->get();
+        return view('dashboard',
+        [
+            'jobs' => $jobs,
+            'unreadNotifications' => $unreadNotifications
+        ]);
     }
 }

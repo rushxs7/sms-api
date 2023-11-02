@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SendJobController;
 use App\Models\SendJob;
 use App\Models\User;
@@ -27,19 +28,7 @@ Route::get('/', function () {
 
 });
 Route::middleware('auth')->group(function() {
-    Route::get('/home', function(Request $request) {
-        $user = User::findOrFail(Auth::id());
-        $unreadNotifications = $user->unreadNotifications;
-        $jobs = SendJob::with(['messages'])
-            ->latest()
-            ->take(5)
-            ->get();
-        return view('dashboard',
-        [
-            'jobs' => $jobs,
-            'unreadNotifications' => $unreadNotifications
-        ]);
-    })->name('home');
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
 
     Route::get('/my-account', [AccountController::class, 'myAccount'])->name('myaccount');
     Route::post('/my-account/save-personal-info', [AccountController::class, 'savePersonalInfo'])->name('myaccount.savepersonalinfo');
