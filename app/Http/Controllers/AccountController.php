@@ -44,8 +44,8 @@ class AccountController extends Controller
         return Redirect::back()->with('success', 'Password was updated successfully.');
     }
 
-    public function myFinances(Request $request)
+    public function myCredits(Request $request)
     {
-        return view('myfinances');
+        return view('mycredits');
     }
 }

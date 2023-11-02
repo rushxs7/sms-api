@@ -11,7 +11,7 @@
                     <h1 class="card-title">Hello, {{ Auth::user()->name }}!</h1>
                     <p class="card-text">We are so glad you're here.</p>
                     <div class="d-flex justify-content-end">
-                        <a href="#" class="btn btn-primary">View my account</a>
+                        <a href="{{ route('myaccount') }}" class="btn btn-primary">View my account</a>
                     </div>
                 </div>
             </div>
@@ -44,10 +44,10 @@
                     <div class="d-flex">
                         <div>
                             <div class="mb-2">
-                                <a href="/add-funds" class="btn btn-primary">Add Funds</a>
+                                <a href="{{ route('mycredits') }}?add_funds=true" class="btn btn-primary">Add Funds</a>
                             </div>
                             <div>
-                                <a href="/withdraw-funds" class="btn btn-secondary">View Transfer History</a>
+                                <a href="{{ route('mycredits') }}" class="btn btn-secondary">View Transfer History</a>
                             </div>
                         </div>
                         <div class="flex-fill">
@@ -66,15 +66,26 @@
                           <tr>
                             <th scope="col">Type</th>
                             <th scope="col">Status</th>
-                            <th scope="col">Sent/Scheduled</th>
+                            <th scope="col">Scheduled for</th>
+                            <th scope="col"></th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                          </tr>
+                            @foreach ($jobs as $job)
+                            <tr>
+                              <td>{{ $job->type }}</td>
+                              @php
+                                $sentMessages = 0;
+                                foreach ($job->messages as $message) {
+                                    if ($message->status == 'sent') {
+                                        $sentMessages++;
+                                    }
+                                }
+                              @endphp
+                              <td>{{ $sentMessages }} / {{ count($job->messages) }} sent</td>
+                              <td>{{ $job->scheduled_at ? \Carbon\Carbon::parse($job->scheduled_at)->toDayDateTimeString() : \Carbon\Carbon::parse($job->created_at)->toDayDateTimeString() }}</td>
+                            </tr>
+                            @endforeach
                         </tbody>
                       </table>
                       <div class="d-flex justify-content-end">

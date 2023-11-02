@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\SendJobController;
+use App\Models\SendJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,11 @@ Route::get('/', function () {
 });
 Route::middleware('auth')->group(function() {
     Route::get('/home', function(Request $request) {
-        return view('dashboard');
+        $jobs = SendJob::with(['messages'])
+            ->latest()
+            ->limit(5)
+            ->get();
+        return view('dashboard', ['jobs' => $jobs]);
     })->name('home');
 
     Route::get('/my-account', [AccountController::class, 'myAccount'])->name('myaccount');
@@ -35,7 +40,7 @@ Route::middleware('auth')->group(function() {
     // Profile Info Name + Email
     // Password Reset
     // API Keys
-    Route::get('/my-finances', [AccountController::class, 'myFinances'])->name('myfinances');
+    Route::get('/my-credits', [AccountController::class, 'myCredits'])->name('mycredits');
     // Finances in
     // Finances out
     Route::prefix('/sms-service')->name('smsservice.')->group(function() {
