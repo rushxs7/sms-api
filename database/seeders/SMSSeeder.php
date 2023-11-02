@@ -33,7 +33,7 @@ class SMSSeeder extends Seeder
             ]);
             if ($bulk)
             {
-                for ($i=0; $i < 10; $i++) {
+                for ($j=0; $j < 10; $j++) {
                     SMSMessage::create([
                         'job_id' => $job->id,
                         'recipient' => $faker->numerify('##########'),
