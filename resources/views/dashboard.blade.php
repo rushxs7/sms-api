@@ -96,7 +96,7 @@
                         </tbody>
                       </table>
                       <div class="d-flex justify-content-end">
-                        <a href="#" class="btn btn-primary">View recent jobs</a>
+                        <a href="{{ route('smsservice.index') }}" class="btn btn-primary">View recent jobs</a>
                     </div>
                 </div>
             </div>
