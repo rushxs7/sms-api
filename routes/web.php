@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\SendJobController;
 use App\Models\SendJob;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -27,11 +28,17 @@ Route::get('/', function () {
 });
 Route::middleware('auth')->group(function() {
     Route::get('/home', function(Request $request) {
+        $user = User::findOrFail(Auth::id());
+        $unreadNotifications = $user->unreadNotifications;
         $jobs = SendJob::with(['messages'])
             ->latest()
-            ->limit(5)
+            ->take(5)
             ->get();
-        return view('dashboard', ['jobs' => $jobs]);
+        return view('dashboard',
+        [
+            'jobs' => $jobs,
+            'unreadNotifications' => $unreadNotifications
+        ]);
     })->name('home');
 
     Route::get('/my-account', [AccountController::class, 'myAccount'])->name('myaccount');

@@ -20,17 +20,24 @@
 
                 <div class="card-body">
                     <table class="table">
-                        <thead>
+                        {{-- <thead>
                           <tr>
                             <th scope="col">Notification</th>
                             <th scope="col">Status</th>
                           </tr>
-                        </thead>
+                        </thead> --}}
                         <tbody>
-                          <tr>
-                            <th scope="row">Lorem ipsum dolor sit amet consectetur adipisicing elit.</th>
-                            <td>3 minutes ago</td>
-                          </tr>
+                            @forelse ($unreadNotifications as $notification)
+                            <tr>
+                              <th scope="row">Lorem ipsum dolor sit amet consectetur adipisicing elit.</th>
+                              <td>3 minutes ago</td>
+                            </tr>
+                            @empty
+                            <tr>
+                              <th scope="row">All caught up.</th>
+                              <td></td>
+                            </tr>
+                            @endforelse
                         </tbody>
                       </table>
                 </div>
