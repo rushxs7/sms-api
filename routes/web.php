@@ -29,11 +29,13 @@ Route::middleware('auth')->group(function() {
         return view('dashboard');
     })->name('home');
 
-    Route::get('/my-account/profile', [AccountController::class, 'myAccount'])->name('myaccount');
+    Route::get('/my-account', [AccountController::class, 'myAccount'])->name('myaccount');
+    Route::post('/my-account/save-personal-info', [AccountController::class, 'savePersonalInfo'])->name('myaccount.savepersonalinfo');
+    Route::post('/my-account/password-reset', [AccountController::class, 'passwordReset'])->name('myaccount.passwordreset');
     // Profile Info Name + Email
     // Password Reset
     // API Keys
-    Route::get('/my-account/finances', [AccountController::class, 'myFinances'])->name('myfinances');
+    Route::get('/my-finances', [AccountController::class, 'myFinances'])->name('myfinances');
     // Finances in
     // Finances out
     Route::prefix('/sms-service')->name('smsservice.')->group(function() {

@@ -51,7 +51,7 @@
                             </div>
                         </div>
                         <div class="flex-fill">
-                            <h2 class="card-title text-end">$100.00</h2>
+                            <h2 class="card-title text-end">$1000000.00</h2>
                             <h5 class="card-subtitle text-secondary text-end">($5.90 on allocation)</h5>
                         </div>
                     </div>

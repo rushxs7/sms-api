@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('s_m_s_messages', function (Blueprint $table) {
             $table->id();
             $table->integer('job_id')->unsigned();
-            $table->integer('recipient');
+            $table->bigInteger('recipient');
             $table->string('message');
             $table->string('status')->default('scheduled');
             $table->text('error')->nullable();
