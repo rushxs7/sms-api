@@ -58,14 +58,14 @@
                             </div>
                         </div>
                         <div class="flex-fill">
-                            <h2 class="card-title text-end">$1000000.00</h2>
+                            <h1 class="card-title text-end">$1000000.00</h1>
                             <h5 class="card-subtitle text-secondary text-end">($5.90 on allocation)</h5>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="card">
-                <div class="card-header">{{ __('Recent Jobs') }}</div>
+                <div class="card-header">{{ __('Recent Send Jobs') }}</div>
 
                 <div class="card-body">
                     <table class="table">
@@ -96,7 +96,7 @@
                         </tbody>
                       </table>
                       <div class="d-flex justify-content-end">
-                        <a href="{{ route('smsservice.index') }}" class="btn btn-primary">View recent jobs</a>
+                        <a href="{{ route('smsservice.index') }}" class="btn btn-primary">View recent send jobs</a>
                     </div>
                 </div>
             </div>

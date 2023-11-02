@@ -35,7 +35,7 @@
                             <a class="nav-link @if(Route::is('home')) active @endif" aria-current="page" href="{{ route('home') }}">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @if(Route::is('smsservice*')) active @endif" aria-current="page" href="{{ route('smsservice.index') }}">SMS Service</a>
+                            <a class="nav-link @if(Route::is('smsservice*')) active @endif" aria-current="page" href="{{ route('smsservice.index') }}">SMS Center</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @if(Route::is('mycredits')) active @endif" aria-current="page" href="{{ route('mycredits') }}">My Credits</a>
