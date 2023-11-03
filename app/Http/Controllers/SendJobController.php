@@ -44,7 +44,7 @@ class SendJobController extends Controller
         $request->validate([
             'type' => 'required',
             'bulk' => 'boolean',
-            'recipients' => 'required_if:bulk,1|array',
+            'recipients' => 'required|array',
             'message' => 'required',
             'scheduled_at' => 'required_if:type,scheduled|date',
         ]);
