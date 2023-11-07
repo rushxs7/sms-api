@@ -10,21 +10,21 @@ function ordinalize(int $number)
     return $number . $suffix;
 }
 
-function isDigicelNumber(int $phoneNumber)
+function isDigicelNumber(float $phoneNumber)
 {
-    if ($phoneNumber >= 7100000 && $phoneNumber <= 7299999) {
+    if ($phoneNumber >= 5977100000 && $phoneNumber <= 5977299999) {
         return true;
     }
 
-    if ($phoneNumber >= 7400000 && $phoneNumber <= 7499999) {
+    if ($phoneNumber >= 5977400000 && $phoneNumber <= 5977499999) {
         return true;
     }
 
-    if ($phoneNumber >= 7600000 && $phoneNumber <= 7699999) {
+    if ($phoneNumber >= 5977600000 && $phoneNumber <= 5977699999) {
         return true;
     }
 
-    if ($phoneNumber >= 8100000 && $phoneNumber <= 8299999) {
+    if ($phoneNumber >= 5978100000 && $phoneNumber <= 5978299999) {
         return true;
     }
 
@@ -33,15 +33,15 @@ function isDigicelNumber(int $phoneNumber)
 
 function isTelesurNumber(int $phoneNumber)
 {
-    if ($phoneNumber >= 7500000 && $phoneNumber <= 7599999) {
+    if ($phoneNumber >= 5977500000 && $phoneNumber <= 5977599999) {
         return true;
     }
 
-    if ($phoneNumber >= 7700000 && $phoneNumber <= 7799999) {
+    if ($phoneNumber >= 5977700000 && $phoneNumber <= 5977799999) {
         return true;
     }
 
-    if ($phoneNumber >= 8400000 && $phoneNumber <= 8999999) {
+    if ($phoneNumber >= 5978400000 && $phoneNumber <= 5978999999) {
         return true;
     }
 
