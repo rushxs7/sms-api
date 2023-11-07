@@ -43,10 +43,10 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [SendJobController::class, 'index'])->name('index');
         Route::get('/new', [SendJobController::class, 'create'])->name('create');
         Route::post('/new', [SendJobController::class, 'store'])->name('store');
-        Route::get('/{job}/show', [SendJobController::class, 'show'])->name('show');
-        Route::get('/{job}/edit', [SendJobController::class, 'edit'])->name('edit');
-        Route::put('/{job}/update', [SendJobController::class, 'update'])->name('update');
-        Route::delete('/{job}/delete', [SendJobController::class, 'delete'])->name('delete');
+        Route::get('/{sendJob}/show', [SendJobController::class, 'show'])->name('show');
+        // Route::get('/{sendJob}/edit', [SendJobController::class, 'edit'])->name('edit');
+        // Route::put('/{sendJob}/update', [SendJobController::class, 'update'])->name('update');
+        // Route::delete('/{sendJob}/delete', [SendJobController::class, 'delete'])->name('delete');
     });
 });
 

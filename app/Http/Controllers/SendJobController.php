@@ -95,7 +95,7 @@ class SendJobController extends Controller
             ]);
         }
 
-        return Redirect::back()->with('success', 'New send job created succesfully.');
+        return Redirect::route('smsservice.show', ['sendJob' => $job->id])->with('success', 'New send job created succesfully.');
     }
 
     /**
@@ -106,7 +106,9 @@ class SendJobController extends Controller
      */
     public function show(SendJob $sendJob)
     {
-        //
+        $sendJob->load(['messages']);
+
+        return view('smsservice.show', ['sendJob' => $sendJob]);
     }
 
     /**
