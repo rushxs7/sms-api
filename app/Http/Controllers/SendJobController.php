@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\SendJob;
 use App\Models\SMSMessage;
+use App\Rules\ValidNumbers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class SendJobController extends Controller
@@ -44,19 +46,37 @@ class SendJobController extends Controller
         $request->validate([
             'type' => 'required',
             'bulk' => 'boolean',
-            'recipients' => 'required|array',
+            'recipients' => ['required', 'array', new ValidNumbers],
             'message' => 'required',
-            'scheduled_at' => 'required_if:type,scheduled|date',
+            'scheduled_at' => 'required_if:type,scheduled',
         ]);
 
         $count = 0;
         foreach ($request->recipients as $phoneNumber)
         {
+            $invalidPhoneNumberArray = [];
             $count++;
             if (!preg_match('/^[0-9]{10}$/', $phoneNumber)) {
                 $error = ValidationException::withMessages(['recipients' => ordinalize($count) . 'phone number is not valid. Make sure the phone number contains 10 digits.']);
                 return throw $error;
             }
+            if (!isDigicelNumber($phoneNumber) && !isTelesurNumber($phoneNumber)) {
+                array_push($invalidPhoneNumberArray, $phoneNumber);
+            }
+        }
+
+        if(count($invalidPhoneNumberArray) > 0){
+            $message = "The following numbers are invalid Surinamese numbers: ";
+            for ($i=0; $i < count($invalidPhoneNumberArray); $i++) {
+                $message .= $invalidPhoneNumberArray[$i];
+                if ($i == (count($invalidPhoneNumberArray) - 1)) { // is last
+                    $message .= ".";
+                } else {
+                    $message .= ", ";
+                }
+            }
+            $error = ValidationException::withMessages(['recipients' => $message]);
+            return throw $error;
         }
 
         $job = SendJob::create([
@@ -95,9 +115,9 @@ class SendJobController extends Controller
      * @param  \App\Models\SendJob  $sendJob
      * @return \Illuminate\Http\Response
      */
-    public function edit(SendJob $sendJob)
+    public function edit(Request $request, SendJob $sendJob)
     {
-        //
+        return view('smsservice.create', ['sendJob' => $sendJob]);
     }
 
     /**
@@ -109,7 +129,41 @@ class SendJobController extends Controller
      */
     public function update(Request $request, SendJob $sendJob)
     {
-        //
+        $request->validate([
+            'type' => 'required',
+            'bulk' => 'boolean',
+            'recipients' => 'required|array',
+            'message' => 'required',
+            'scheduled_at' => 'required_if:type,scheduled|date',
+        ]);
+
+        $count = 0;
+        foreach ($request->recipients as $phoneNumber)
+        {
+            $count++;
+            if (!preg_match('/^[0-9]{10}$/', $phoneNumber)) {
+                $error = ValidationException::withMessages(['recipients' => ordinalize($count) . 'phone number is not valid. Make sure the phone number contains 10 digits.']);
+                return throw $error;
+            }
+        }
+
+        $job = SendJob::create([
+            'type' => $request->type,
+            'bulk' => $request->bulk ? true : false,
+            'message' => $request->message,
+            'scheduled_at' => Carbon::parse($request->scheduled_at),
+        ]);
+
+        foreach($request->recipients as $phoneNumber)
+        {
+            SMSMessage::create([
+                'job_id' => $job->id,
+                'recipient' => $phoneNumber,
+                'message' => $request->message
+            ]);
+        }
+
+        return Redirect::back()->with('success', 'New send job created succesfully.');
     }
 
     /**
