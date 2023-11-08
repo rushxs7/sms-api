@@ -50,6 +50,7 @@ class SendJobController extends Controller
             'message' => 'required',
             'scheduled_at' => 'required_if:type,scheduled',
         ]);
+        // dd($request);
 
         $count = 0;
         foreach ($request->recipients as $phoneNumber)
@@ -108,7 +109,12 @@ class SendJobController extends Controller
     {
         $sendJob->load(['messages']);
 
-        return view('smsservice.show', ['sendJob' => $sendJob]);
+        $overallStatus = $this->getOverallStatus($sendJob->messages);
+
+        return view('smsservice.show', [
+            'sendJob' => $sendJob,
+            'overallStatus' => $overallStatus
+        ]);
     }
 
     /**
@@ -177,5 +183,47 @@ class SendJobController extends Controller
     public function destroy(SendJob $sendJob)
     {
         //
+    }
+
+    private function getOverallStatus($messages)
+    {
+        $totalMessages = count($messages);
+        $sentMessages = 0;
+        $scheduledMessages = 0;
+        $errorMessages = 0;
+        $overallStatus = "";
+        foreach ($messages as $message) {
+            switch ($message->status) {
+                case 'scheduled':
+                    $scheduledMessages++;
+                    break;
+
+                case 'sent':
+                    $sentMessages++;
+                    break;
+
+                case 'error':
+                    $errorMessages++;
+                    break;
+            }
+        }
+        if ($sentMessages == $totalMessages) {
+            // All messages were sent
+            $overallStatus = "sent";
+        } else if ($scheduledMessages == $totalMessages) {
+            // All messages scheduled
+            $overallStatus = 'scheduled';
+        } else {
+            // sent with errors
+            // sending with errors
+            if (($sentMessages + $scheduledMessages) == $totalMessages) {
+                $overallStatus = 'sending';
+            } else if (($sentMessages + $scheduledMessages + $errorMessages) == $totalMessages) {
+                $overallStatus = 'sending';
+            } else {
+                $overallStatus = 'error';
+            }
+        }
+        return $overallStatus;
     }
 }
