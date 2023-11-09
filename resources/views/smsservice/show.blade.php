@@ -38,7 +38,7 @@
         <div class="col-9">
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex border rounded p-3">
+                    <div class="d-flex border rounded p-3 mb-3">
                         <div>
                             <p>
                                 <strong>Timing</strong>: {{ $sendJob->type }}<br />
@@ -75,7 +75,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="border rounded p-3">
+                    <div class="border rounded p-3 mb-3">
                         <strong>
                             Message:
                         </strong>
