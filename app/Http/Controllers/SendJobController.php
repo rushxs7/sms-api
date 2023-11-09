@@ -6,10 +6,13 @@ use App\Models\SendJob;
 use App\Models\SMSMessage;
 use App\Rules\ValidNumbers;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use smpp\SMPP;
 
 class SendJobController extends Controller
 {
@@ -89,11 +92,32 @@ class SendJobController extends Controller
 
         foreach($request->recipients as $phoneNumber)
         {
-            SMSMessage::create([
+            $smsMessage = SMSMessage::create([
                 'job_id' => $job->id,
                 'recipient' => $phoneNumber,
                 'message' => $request->message
             ]);
+
+            try {
+                if(isTelesurNumber($phoneNumber)){
+                    (new \App\Http\Controllers\SmsBuilder\SmsBuilder(env("SMPP_HOST_TELESUR"), env("SMPP_PORT_TELESUR"), env("SMPP_SYSTEMID_TELESUR"), env("SMPP_PASSWORD_TELESUR"), env("SMPP_TIMEOUT_TELESUR"), true))
+                        ->setRecipient($phoneNumber, SMPP::TON_INTERNATIONAL)
+                        ->sendMessage($request->message);
+                } else if (isDigicelNumber($phoneNumber)) {
+                    (new \App\Http\Controllers\SmsBuilder\SmsBuilder(env("SMPP_HOST_DIGICEL"), env("SMPP_PORT_DIGICEL"), env("SMPP_SYSTEMID_DIGICEL"), env("SMPP_PASSWORD_DIGICEL"), env("SMPP_TIMEOUT_DIGICEL"), true))
+                        ->setRecipient($phoneNumber, SMPP::TON_INTERNATIONAL)
+                        ->sendMessage($request->message);
+                } else {
+                    throw new Exception("Non-valid Number");
+                }
+
+                $smsMessage->status = 'sent';
+                $smsMessage->save();
+            } catch (\Throwable $th) {
+                $smsMessage->status = 'error';
+                $smsMessage->error = (string) $th;
+                Log::error($th);
+            }
         }
 
         return Redirect::route('smsservice.show', ['sendJob' => $job->id])->with('success', 'New send job created succesfully.');

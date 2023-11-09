@@ -4,8 +4,61 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8707187b3cc03971426f4de30c9a888f",
+    "content-hash": "50eec23e48f264a74baf0546d1072e78",
     "packages": [
+        {
+            "name": "alexandr-mironov/php8-smpp",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alexandr-mironov/php8-smpp.git",
+                "reference": "5f890514b70b6eb9aee0d4db7fd51167796f3455"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alexandr-mironov/php8-smpp/zipball/5f890514b70b6eb9aee0d4db7fd51167796f3455",
+                "reference": "5f890514b70b6eb9aee0d4db7fd51167796f3455",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "ext-sockets": "*",
+                "php": "8.*"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "1.4.8"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "smpp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Alexandr Mironov",
+                    "email": "alex@hyptrex.com"
+                }
+            ],
+            "description": "PHP SMPP client lib, based on fork of onlinecity/php-smpp",
+            "homepage": "https://github.com/alexandr-mironov/php8-smpp",
+            "keywords": [
+                "gsm",
+                "smpp",
+                "sms",
+                "texting"
+            ],
+            "support": {
+                "issues": "https://github.com/alexandr-mironov/php8-smpp/issues",
+                "source": "https://github.com/alexandr-mironov/php8-smpp/tree/main"
+            },
+            "time": "2022-12-02T19:41:08+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.11.0",
