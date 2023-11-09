@@ -61,8 +61,9 @@ Route::middleware('auth')->group(function() {
         // Route::delete('/{sendJob}/delete', [SendJobController::class, 'delete'])->name('delete');
     });
 
-    Route::middleware('role:admin')->group(function() {
-        Route::resource('/users', UserController::class);
+    Route::middleware(['role:admin'])->group(function() {
+        Route::resource('/users', UserController::class)->except(['show', 'create']);
+        Route::put('/users/{user}/updatepassword', [UserController::class, 'updatePassword'])->name('users.updatepassword');
     });
 });
 

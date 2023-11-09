@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
         ]);
         $user->assignRole('admin');
 
-        if (env("APP_ENV" != "production")) {
+        if (env("APP_ENV") != "production") {
             for ($i=0; $i < 10; $i++) {
                 $user = User::create([
                     'name' => $faker->name(),

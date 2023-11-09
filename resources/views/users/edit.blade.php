@@ -22,7 +22,8 @@
     <div class="col-8">
       <div class="card shadow">
         <div class="card-body">
-          <form action="{{ route('myaccount.savepersonalinfo') }}" method="POST">
+          <form action="{{ route('users.update', ['user' => $user]) }}" method="POST">
+            @method("PUT")
             @csrf
             <div class="mb-3">
               <label for="name" class="form-label">Name</label>
@@ -46,7 +47,8 @@
     <div class="col-8">
       <div class="card shadow">
         <div class="card-body">
-          <form action="{{ route('myaccount.passwordreset') }}" method="POST" autocomplete="off">
+          <form action="{{ route('users.updatepassword', ['user' => $user]) }}" method="POST" autocomplete="off">
+            @method("PUT")
             @csrf
             <div class="mb-3">
               <label for="password" class="form-label">New password</label>
