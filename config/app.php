@@ -187,6 +187,7 @@ return [
          */
         L5Swagger\L5SwaggerServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
         /*
          * Application Service Providers...

@@ -85,7 +85,7 @@
                 $sentMessages = 0;
                 foreach ($job->messages as $message) {
                 if ($message->status == 'sent') {
-                $sentMessages++;
+                $sentMesssages++;
                 }
                 }
                 @endphp

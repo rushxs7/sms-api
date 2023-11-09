@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SendJobController;
+use App\Http\Controllers\UserController;
 use App\Models\SendJob;
 use App\Models\User;
 use Carbon\Carbon;
@@ -30,14 +31,13 @@ Route::get('/', function () {
 });
 Route::middleware('auth')->group(function() {
     Route::get('/test', function(Request $request) {
-        $sendJob = SendJob::findOrFail(12);
-        $sendJob->load(['messages']);
+        // $sendJob = SendJob::findOrFail(12);
+        // $sendJob->load(['messages']);
 
-        $scheduled_at = Carbon::parse($sendJob->scheduled_at);
-        $difference = Carbon::now()->diffInMinutes($scheduled_at);
+        // $scheduled_at = Carbon::parse($sendJob->scheduled_at);
+        // $difference = Carbon::now()->diffInMinutes($scheduled_at);
 
-        dd($difference);
-
+        // dd($difference);
     });
 
     Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
@@ -59,6 +59,10 @@ Route::middleware('auth')->group(function() {
         // Route::get('/{sendJob}/edit', [SendJobController::class, 'edit'])->name('edit');
         // Route::put('/{sendJob}/update', [SendJobController::class, 'update'])->name('update');
         // Route::delete('/{sendJob}/delete', [SendJobController::class, 'delete'])->name('delete');
+    });
+
+    Route::middleware('role:admin')->group(function() {
+        Route::resource('/users', UserController::class);
     });
 });
 
