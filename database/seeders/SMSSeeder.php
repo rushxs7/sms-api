@@ -36,14 +36,14 @@ class SMSSeeder extends Seeder
                 for ($j=0; $j < 10; $j++) {
                     SMSMessage::create([
                         'job_id' => $job->id,
-                        'recipient' => $faker->numerify('##########'),
+                        'recipient' => $faker->numerify('597#######'),
                         'message' => $message,
                     ]);
                 }
             } else {
                 SMSMessage::create([
                     'job_id' => $job->id,
-                    'recipient' => $faker->numerify('##########'),
+                    'recipient' => $faker->numerify('597#######'),
                     'message' => $message,
                 ]);
             }
