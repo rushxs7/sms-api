@@ -20,6 +20,7 @@ class UserController extends Controller
         $users = User::where('id', '!=', Auth::id())
             ->with(['roles'])
             ->latest()
+            ->withTrashed()
             ->paginate(10);
 
         return view('users.index', ['users' => $users]);
@@ -37,7 +38,6 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:6|confirmed',
-            'role' => 'required',
         ]);
 
         $user = User::create([
@@ -46,7 +46,14 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $user->assignRole('admin');
+        $loggedInUser = Auth::user();
+
+        if (Auth::user()->hasRole('admin')) {
+            $user->assignRole($request->role);
+        } else {
+            $user->assignRole('default');
+        }
+
 
         return Redirect::route('users.index')->with('success', 'New user account created succesfully.');
     }
