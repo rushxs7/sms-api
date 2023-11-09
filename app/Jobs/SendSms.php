@@ -39,7 +39,8 @@ class SendSms implements ShouldQueue
      */
     public function handle()
     {
-        // Check if number is Telesur or Digicel
+        $smsMessage = SMSMessage::findOrFail($this->message->id);
+
         if(isTelesurNumber($this->message->recipient)){
             (new \App\Http\Controllers\SmsBuilder\SmsBuilder(env("SMPP_HOST_TELESUR"), env("SMPP_PORT_TELESUR"), env("SMPP_SYSTEMID_TELESUR"), env("SMPP_PASSWORD_TELESUR"), env("SMPP_TIMEOUT_TELESUR"), true))
                 ->setRecipient($this->message->recipient, SMPP::TON_INTERNATIONAL)
@@ -51,12 +52,18 @@ class SendSms implements ShouldQueue
         } else {
             throw new Exception("Non-valid Number");
         }
-        // Send SMS
-        // Error handling for both instances
+
+        $smsMessage->status = 'sent';
+        $smsMessage->save();
     }
 
     public function failed(Throwable $e)
     {
         Log::error("SMS message to " . $this->message->recipient . " has failed to send.");
+        $message = SMSMessage::findOrFail($this->message->id);
+        $message->status = 'error';
+        $message->error = (string) $e->getMessage();
+        $message->save();
+        Log::error($e);
     }
 }

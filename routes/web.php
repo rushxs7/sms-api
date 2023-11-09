@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SendJobController;
 use App\Models\SendJob;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,17 @@ Route::get('/', function () {
 
 });
 Route::middleware('auth')->group(function() {
+    Route::get('/test', function(Request $request) {
+        $sendJob = SendJob::findOrFail(12);
+        $sendJob->load(['messages']);
+
+        $scheduled_at = Carbon::parse($sendJob->scheduled_at);
+        $difference = Carbon::now()->diffInMinutes($scheduled_at);
+
+        dd($difference);
+
+    });
+
     Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
 
     Route::get('/my-account', [AccountController::class, 'myAccount'])->name('myaccount');
