@@ -66,6 +66,7 @@ class UserController extends Controller
      */
     public function edit(User $user, Request $request)
     {
+        $user->load(['tokens']);
         return view('users.edit', ['user' => $user]);
     }
 
