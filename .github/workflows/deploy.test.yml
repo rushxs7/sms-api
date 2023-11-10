@@ -38,5 +38,5 @@ jobs:
           card-layout-exit: cozy
           show-on-failure: true
           custom-actions: |
-            - text: Go to testing website
+            - text: Go to testing page
               url: "http://168.195.218.170:9000/"
