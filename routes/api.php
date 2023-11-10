@@ -24,16 +24,16 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::prefix('/sms')->group(function() {
         Route::post('/send/now', [SmsController::class, 'sendNow'])->name('sms.sendnow');
         Route::post('/send/later', [SmsController::class, 'sendLater'])->name('sms.sendlater');
-        Route::post('/cancel/{smsUuid}', [SmsController::class, 'cancelSms'])->name('sms.sendlater');
+        // Route::post('/cancel/{smsUuid}', [SmsController::class, 'cancelSms'])->name('sms.sendlater');
         Route::post('/bulksend/now', [SmsController::class, 'bulkSendNow'])->name('sms.bulksendnow');
         Route::post('/bulksend/later', [SmsController::class, 'bulkSendLater'])->name('sms.bulksendlater');
-        Route::post('/bulksend/cancel/{bulkUuid}', [SmsController::class, 'bulkSendLater'])->name('sms.bulksendlater');
+        // Route::post('/bulksend/cancel/{bulkUuid}', [SmsController::class, 'bulkSendLater'])->name('sms.bulksendlater');
     });
 
     Route::prefix('/history')->group(function() {
-        Route::get('/', [HistoryController::class, 'index'])->name('history.index');
-        Route::get('/{smsUuid}', [HistoryController::class, 'show'])->name('history.show');
-        Route::get('/{smsUuid}/isSent', [HistoryController::class, 'isSent'])->name('history.isSent');
+        // Route::get('/', [HistoryController::class, 'index'])->name('history.index');
+        // Route::get('/{smsUuid}', [HistoryController::class, 'show'])->name('history.show');
+        // Route::get('/{smsUuid}/isSent', [HistoryController::class, 'isSent'])->name('history.isSent');
     });
 });
 

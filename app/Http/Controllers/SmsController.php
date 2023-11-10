@@ -6,10 +6,19 @@ use App\Http\Requests\BulkSendSmsLaterRequest;
 use App\Http\Requests\BulkSendSmsNowRequest;
 use App\Http\Requests\SendSmsLaterRequest;
 use App\Http\Requests\SendSmsNowRequest;
+use App\Jobs\SendSms;
+use App\Models\SendJob;
+use App\Models\SMSMessage;
+use App\Rules\LaterThanNow;
+use App\Rules\ValidNumber;
+use App\Rules\ValidNumbers;
+use App\Traits\HttpResponses;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SmsController extends Controller
 {
+    use HttpResponses;
     /**
      * @OA\Post(
      *     path="/api/sms/send/now",
@@ -38,8 +47,22 @@ class SmsController extends Controller
      */
     public function sendNow(SendSmsNowRequest $request)
     {
-        // recipient: 597(7digits)
-        // body: required|string|min:1|max:160
+        $job = SendJob::create([
+            'type' => 'instant',
+            'bulk' => $request->bulk ? true : false,
+            'message' => $request->body,
+            'scheduled_at' => Carbon::now(),
+        ]);
+
+        $message = SMSMessage::create([
+            'job_id' => $job->id,
+            'recipient' => $request->recipient,
+            'message' => $request->body
+        ]);
+
+        SendSms::dispatch($message);
+
+        return $this->success([], 'Sendjob succesfully dispatched.');
     }
 
     /**
@@ -72,12 +95,35 @@ class SmsController extends Controller
      *     )
      * )
      */
-    public function sendLater(SendSmsLaterRequest $request)
+    public function sendLater(Request $request)
     {
+        $request->validate([
+            'recipient' => ['required', 'numeric', new ValidNumber],
+            'body' => 'required|string|min:1|max:160',
+            'datetime' => ['required', 'date', new LaterThanNow]
+        ]);
         // recipient: required|597(7digits)
         // body: required|string|min:1|max:160
         // datetime: required|datetime|laterthannow
+        $scheduled_at = Carbon::parse($request->datetime);
+        $difference = Carbon::now()->diffInSeconds($scheduled_at);
 
+        $job = SendJob::create([
+            'type' => 'scheduled',
+            'bulk' => $request->bulk ? true : false,
+            'message' => $request->body,
+            'scheduled_at' => $scheduled_at,
+        ]);
+
+        $message = SMSMessage::create([
+            'job_id' => $job->id,
+            'recipient' => $request->recipient,
+            'message' => $request->body
+        ]);
+
+        SendSms::dispatch($message)->delay(now()->addSeconds($difference));
+
+        return $this->success([], 'Sendjob succesfully dispatched (Will be executed on ' . $scheduled_at->format('d F Y \\a\\t h:i:s A') . ').');
     }
 
     /**
@@ -130,10 +176,32 @@ class SmsController extends Controller
      *     )
      * )
      */
-    public function bulkSendNow(BulkSendSmsNowRequest $request)
+    public function bulkSendNow(Request $request)
     {
-        // recipients: required|array|597(7digits)
-        // body: required|min:1|max:160
+        $request->validate([
+            'recipients' => ['required', 'array', new ValidNumbers],
+            'body' => 'required|min:1|max:160'
+        ]);
+
+        $job = SendJob::create([
+            'type' => 'instant',
+            'bulk' => true,
+            'message' => $request->body,
+            'scheduled_at' => Carbon::now(),
+        ]);
+
+        foreach($request->recipients as $phoneNumber)
+        {
+            $smsMessage = SMSMessage::create([
+                'job_id' => $job->id,
+                'recipient' => $phoneNumber,
+                'message' => $request->body
+            ]);
+
+            SendSms::dispatch($smsMessage);
+        }
+
+        return $this->success([], 'Sendjob succesfullt dispatched.');
     }
 
     /**
@@ -169,11 +237,30 @@ class SmsController extends Controller
      *     )
      * )
      */
-    public function bulkSendLater(BulkSendSmsLaterRequest $request)
+    public function bulkSendLater(Request $request)
     {
-        // recipients: required|array|597(7digits)
-        // body: required|min:1|max:160
-        // datetime: required|datetime|laterthannow
+        $job = SendJob::create([
+            'type' => 'instant',
+            'bulk' => true,
+            'message' => $request->body,
+            'scheduled_at' => Carbon::now(),
+        ]);
+
+        $scheduled_at = Carbon::parse($job->scheduled_at);
+        $difference = Carbon::now()->diffInSeconds($scheduled_at);
+
+        foreach($request->recipients as $phoneNumber)
+        {
+            $smsMessage = SMSMessage::create([
+                'job_id' => $job->id,
+                'recipient' => $phoneNumber,
+                'message' => $request->body
+            ]);
+
+            SendSms::dispatch($smsMessage)->delay(now()->addSeconds($difference));
+        }
+
+        return $this->success([], 'Sendjob succesfully dispatched (Will be executed on ' . $scheduled_at->format('d F Y \\a\\t h:i:s A') . ').');
     }
     /**
      * @OA\Post(

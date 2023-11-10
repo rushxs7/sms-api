@@ -105,9 +105,9 @@ class SendJobController extends Controller
                 SendSms::dispatch($smsMessage);
             } else if ($job->type == 'scheduled') {
                 $scheduled_at = Carbon::parse($job->scheduled_at);
-                $difference = Carbon::now()->diffInMinutes($scheduled_at);
+                $difference = Carbon::now()->diffInSeconds($scheduled_at);
 
-                SendSms::dispatch($smsMessage)->delay(now()->addMinutes($difference));
+                SendSms::dispatch($smsMessage)->delay(now()->addSeconds($difference));
             }
         }
 

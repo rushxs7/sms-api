@@ -55,6 +55,7 @@ class ValidNumbers implements Rule
                 $message .= ", ";
             }
         }
+        $message .= ' Please submit the number in the following format: "597XXXXXXX".';
         return $message;
     }
 }
