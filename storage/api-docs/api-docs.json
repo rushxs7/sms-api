@@ -51,7 +51,7 @@
         },
         "/api/history": {
             "get": {
-                "summary": "View send-history of signed-in user",
+                "summary": "View send-history of signed-in user (out of order)",
                 "operationId": "2c91f335de85204f3ae1465ff34e29d2",
                 "responses": {
                     "200": {
@@ -62,7 +62,7 @@
         },
         "/api/history/{smsUuid}": {
             "get": {
-                "summary": "View details of an SMS by providing Uuid",
+                "summary": "View details of an SMS by providing Uuid (out of order)",
                 "operationId": "0ad70b8fc07f0c7f97ee2f4632f165de",
                 "parameters": [
                     {
@@ -90,7 +90,7 @@
         },
         "/api/history/{smsUuid}/isSent": {
             "get": {
-                "summary": "Validate if an SMS has been sent by sending the SMS Uuid",
+                "summary": "Validate if an SMS has been sent by sending the SMS Uuid (out of order)",
                 "operationId": "e80d1427c0c940f7df6e735f0eccbf42",
                 "parameters": [
                     {
@@ -186,7 +186,7 @@
         },
         "/api/sms/cancel/{smsUuid}": {
             "post": {
-                "summary": "Cancel an SMS by providing SMS Uuid",
+                "summary": "Cancel an SMS by providing SMS Uuid (out of order)",
                 "operationId": "70537cac5b6b0bd8a826f349c275652d",
                 "parameters": [
                     {
@@ -296,7 +296,7 @@
         },
         "/api/bulksend/cancel/{smsUuid}": {
             "post": {
-                "summary": "Cancel a bulk send by providing Uuid of assignment",
+                "summary": "Cancel a bulk send by providing Uuid of assignment (out of order)",
                 "operationId": "2b8767c0abae04d314e1da9c5c0c5369",
                 "parameters": [
                     {

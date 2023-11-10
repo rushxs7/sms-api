@@ -9,7 +9,7 @@ class HistoryController extends Controller
         /**
      * @OA\Get(
      *     path="/api/history",
-     *     summary="View send-history of signed-in user",
+     *     summary="View send-history of signed-in user (out of order)",
      *     @OA\Response(
      *         response=200,
      *         description="OK"
@@ -22,7 +22,7 @@ class HistoryController extends Controller
     /**
      * @OA\Get(
      *     path="/api/history/{smsUuid}",
-     *     summary="View details of an SMS by providing Uuid",
+     *     summary="View details of an SMS by providing Uuid (out of order)",
      *     @OA\Parameter(
      *         description="SMS Uuid parameter",
      *         in="path",
@@ -43,7 +43,7 @@ class HistoryController extends Controller
     /**
      * @OA\Get(
      *     path="/api/history/{smsUuid}/isSent",
-     *     summary="Validate if an SMS has been sent by sending the SMS Uuid",
+     *     summary="Validate if an SMS has been sent by sending the SMS Uuid (out of order)",
      *     @OA\Parameter(
      *         description="SMS Uuid parameter",
      *         in="path",

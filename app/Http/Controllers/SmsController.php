@@ -129,7 +129,7 @@ class SmsController extends Controller
     /**
      * @OA\Post(
      *     path="/api/sms/cancel/{smsUuid}",
-     *     summary="Cancel an SMS by providing SMS Uuid",
+     *     summary="Cancel an SMS by providing SMS Uuid (out of order)",
      *     @OA\Parameter(
      *         description="SMS Uuid parameter",
      *         in="path",
@@ -265,7 +265,7 @@ class SmsController extends Controller
     /**
      * @OA\Post(
      *     path="/api/bulksend/cancel/{smsUuid}",
-     *     summary="Cancel a bulk send by providing Uuid of assignment",
+     *     summary="Cancel a bulk send by providing Uuid of assignment (out of order)",
      *     @OA\Parameter(
      *         description="Bulk Uuid parameter",
      *         in="path",
