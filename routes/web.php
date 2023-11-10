@@ -42,15 +42,6 @@ Route::middleware('auth')->group(function() {
 
     Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
 
-    Route::get('/my-account', [AccountController::class, 'myAccount'])->name('myaccount');
-    Route::post('/my-account/save-personal-info', [AccountController::class, 'savePersonalInfo'])->name('myaccount.savepersonalinfo');
-    Route::post('/my-account/password-reset', [AccountController::class, 'passwordReset'])->name('myaccount.passwordreset');
-    // Profile Info Name + Email
-    // Password Reset
-    // API Keys
-    Route::get('/my-credits', [AccountController::class, 'myCredits'])->name('mycredits');
-    // Finances in
-    // Finances out
     Route::prefix('/sms-service')->name('smsservice.')->group(function() {
         Route::get('/', [SendJobController::class, 'index'])->name('index');
         Route::get('/new', [SendJobController::class, 'create'])->name('create');
@@ -60,6 +51,16 @@ Route::middleware('auth')->group(function() {
         // Route::put('/{sendJob}/update', [SendJobController::class, 'update'])->name('update');
         // Route::delete('/{sendJob}/delete', [SendJobController::class, 'delete'])->name('delete');
     });
+
+    Route::get('/my-account', [AccountController::class, 'myAccount'])->name('myaccount');
+    Route::post('/my-account/save-personal-info', [AccountController::class, 'savePersonalInfo'])->name('myaccount.savepersonalinfo');
+    Route::post('/my-account/password-reset', [AccountController::class, 'passwordReset'])->name('myaccount.passwordreset');
+    // API Keys
+
+    Route::get('/my-credits', [AccountController::class, 'myCredits'])->name('mycredits');
+    // Finances in
+    // Finances out
+
 
     Route::middleware(['role:admin'])->group(function() {
         Route::resource('/users', UserController::class)->except(['show', 'create']);
