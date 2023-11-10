@@ -1,0 +1,42 @@
+name: "Automatic Deployment for Testing"
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  deploy:
+    name: Deploy to Testing Server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Testing testing server connection
+        uses: appleboy/ssh-action@master
+        with:
+          host: 168.195.218.170
+          username: user
+          key: ${{ secrets.SSHKEY }}
+          port: 22
+          script: |
+            cd projects/sms-api
+            git pull origin develop
+            git status
+            composer install --optimize-autoloader
+            php artisan migrate --force
+            npm i
+            npm run build
+  notify:
+    name: Notify MS Teams
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # this is the new step
+      - uses: toko-bifrost/ms-teams-deploy-card@master #  or "./" if in a local set-up
+        if: always()
+        with:
+          github-token: ${{ github.token }}
+          webhook-uri: ${{ secrets.TEAMS_WEBHOOK_URL }}
+          card-layout-start: cozy
+          card-layout-exit: cozy
+          show-on-failure: true
+          custom-actions: |
+            - text: Go to testing website
+              url: "http://168.195.218.170:9000/"
