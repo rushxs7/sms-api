@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     if (Auth::check()) {
-        return redirect('home');
+        return redirect('dashboard');
     }
     return redirect('login');
 
@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function() {
         // dd($difference);
     });
 
-    Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
     Route::prefix('/sms-service')->name('smsservice.')->group(function() {
         Route::get('/', [SendJobController::class, 'index'])->name('index');
