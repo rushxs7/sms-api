@@ -33,7 +33,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link @if(Route::is('dashboard')) active @endif" aria-current="page" href="{{ route('home') }}">Dashboard</a>
+                            <a class="nav-link @if(Route::is('dashboard')) active @endif" aria-current="page" href="{{ route('dashboard') }}">Dashboard</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @if(Route::is('smsservice*')) active @endif" aria-current="page" href="{{ route('smsservice.index') }}">SMS Center</a>
