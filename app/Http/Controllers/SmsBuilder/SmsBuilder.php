@@ -4,12 +4,16 @@ declare(strict_types = 1);
 namespace App\Http\Controllers\SmsBuilder;
 
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use smpp\{Address, Client as SmppClient, Smpp, transport\Socket};
 
 class SmsBuilder
 {
     /** @var string 11 chars limit */
-    public const DEFAULT_SENDER = 'Datasur';
+    // public const DEFAULT_SENDER = 'Datasur';
+    public const DEFAULT_SENDER = 'SMS Portal';
+
+    protected string $defaultSender;
 
     protected Socket $transport;
 
@@ -33,6 +37,7 @@ class SmsBuilder
      * @param string $login
      * @param string $password
      * @param int $timeout timeout of reading PDU in milliseconds
+     * @param object $user User object
      * @param bool $debug - debug flag when true output additional info
      */
     public function __construct(
@@ -40,6 +45,7 @@ class SmsBuilder
         int $port,
         string $login,
         string $password,
+        object $user,
         int $timeout = 10000,
         bool $debug = false
     ) {
@@ -52,7 +58,7 @@ class SmsBuilder
         $this->login = $login;
         $this->password = $password;
 
-        $this->from = new Address(self::DEFAULT_SENDER, SMPP::TON_ALPHANUMERIC);
+        $this->from = new Address($user->default_sender ? $user->default_sender : self::DEFAULT_SENDER, SMPP::TON_ALPHANUMERIC);
     }
 
     /**

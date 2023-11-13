@@ -15,6 +15,7 @@ use App\Rules\ValidNumbers;
 use App\Traits\HttpResponses;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SmsController extends Controller
 {
@@ -60,7 +61,7 @@ class SmsController extends Controller
             'message' => $request->body
         ]);
 
-        SendSms::dispatch($message);
+        SendSms::dispatch($message, Auth::user());
 
         return $this->success([], 'Sendjob succesfully dispatched.');
     }
@@ -121,7 +122,7 @@ class SmsController extends Controller
             'message' => $request->body
         ]);
 
-        SendSms::dispatch($message)->delay(now()->addSeconds($difference));
+        SendSms::dispatch($message, Auth::user())->delay(now()->addSeconds($difference));
 
         return $this->success([], 'Sendjob succesfully dispatched (Will be executed on ' . $scheduled_at->format('d F Y \\a\\t h:i:s A') . ').');
     }
@@ -198,7 +199,7 @@ class SmsController extends Controller
                 'message' => $request->body
             ]);
 
-            SendSms::dispatch($smsMessage);
+            SendSms::dispatch($smsMessage, Auth::user());
         }
 
         return $this->success([], 'Sendjob succesfullt dispatched.');
@@ -257,7 +258,7 @@ class SmsController extends Controller
                 'message' => $request->body
             ]);
 
-            SendSms::dispatch($smsMessage)->delay(now()->addSeconds($difference));
+            SendSms::dispatch($smsMessage, Auth::user())->delay(now()->addSeconds($difference));
         }
 
         return $this->success([], 'Sendjob succesfully dispatched (Will be executed on ' . $scheduled_at->format('d F Y \\a\\t h:i:s A') . ').');

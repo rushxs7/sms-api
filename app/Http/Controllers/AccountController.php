@@ -31,6 +31,19 @@ class AccountController extends Controller
         return Redirect::back()->with('success', 'Personal info was updated successfully.');
     }
 
+    public function saveSenderInfo(Request $request)
+    {
+        $request->validate([
+            'default_sender' => 'required|string|max:11',
+        ]);
+
+        $user = User::findOrFail(Auth::id());
+        $user->default_sender = $request->default_sender;
+        $user->save();
+
+        return Redirect::back()->with('success', 'Default sender info was updated successfully.');
+    }
+
     public function passwordReset(Request $request)
     {
         $request->validate([

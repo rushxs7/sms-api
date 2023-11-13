@@ -9,6 +9,7 @@ use App\Rules\ValidNumbers;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -102,12 +103,12 @@ class SendJobController extends Controller
             ]);
 
             if($job->type == 'instant'){
-                SendSms::dispatch($smsMessage);
+                SendSms::dispatch($smsMessage, Auth::user());
             } else if ($job->type == 'scheduled') {
                 $scheduled_at = Carbon::parse($job->scheduled_at);
                 $difference = Carbon::now()->diffInSeconds($scheduled_at);
 
-                SendSms::dispatch($smsMessage)->delay(now()->addSeconds($difference));
+                SendSms::dispatch($smsMessage, Auth::user())->delay(now()->addSeconds($difference));
             }
         }
 
