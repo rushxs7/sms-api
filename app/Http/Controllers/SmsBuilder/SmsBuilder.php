@@ -9,7 +9,7 @@ use smpp\{Address, Client as SmppClient, Smpp, transport\Socket};
 class SmsBuilder
 {
     /** @var string 11 chars limit */
-    public const DEFAULT_SENDER = 'example';
+    public const DEFAULT_SENDER = 'Datasur';
 
     protected Socket $transport;
 
