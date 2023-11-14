@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Jobs\SendSms;
 use App\Models\SendJob;
 use App\Models\SMSMessage;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -33,7 +35,7 @@ class SMSSeeder extends Seeder
             ]);
             if ($bulk)
             {
-                for ($j=0; $j < 10; $j++) {
+                for ($j=0; $j < 50; $j++) {
                     SMSMessage::create([
                         'job_id' => $job->id,
                         'recipient' => $faker->numerify('597#######'),
@@ -46,6 +48,26 @@ class SMSSeeder extends Seeder
                     'recipient' => $faker->numerify('597#######'),
                     'message' => $message,
                 ]);
+            }
+            foreach($job->messages as $smsMessage)
+            {
+                $smsMessage = SMSMessage::where('id', $smsMessage->id)
+                    ->with(['jobs'])
+                    ->first();
+                $randomUser = User::inRandomOrder()->first();
+
+                if($job->type == 'instant'){
+                    SendSms::dispatch($smsMessage, $randomUser);
+                } else if ($job->type == 'scheduled') {
+                    $scheduled_at = Carbon::parse($job->scheduled_at);
+                    if (Carbon::now()->greaterThanOrEqualTo($scheduled_at)) {
+                        SendSms::dispatch($smsMessage, $randomUser);
+                    } else {
+                        $difference = Carbon::now()->diffInSeconds($scheduled_at);
+                        SendSms::dispatch($smsMessage, $randomUser)->delay(now()->addSeconds($difference));
+                    }
+
+                }
             }
         }
     }

@@ -29,6 +29,11 @@ class SendJobController extends Controller
             ->latest()
             ->paginate(12);
 
+        $sendJobs->getCollection()->transform(function($sendJob) {
+            $sendJob->overall_status = $this->getOverallStatus($sendJob->messages);
+            return $sendJob;
+        });
+
         return view('smsservice.index', ['sendJobs' => $sendJobs]);
     }
 

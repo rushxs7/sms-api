@@ -54,7 +54,7 @@ class SendSms implements ShouldQueue
                 ->setRecipient($this->message->recipient, SMPP::TON_INTERNATIONAL)
                 ->sendMessage($this->message->message);
         } else {
-            throw new Exception("Non-valid Number");
+            throw new Exception("Non-valid Surinamese number");
         }
 
         $smsMessage->status = 'sent';

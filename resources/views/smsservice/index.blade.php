@@ -54,26 +54,35 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if($sendJob->job_finished_at)
-                                    @if ($sendJob->error)
-                                    <span class="badge rounded-pill bg-warning"><i class="fa-solid fa-info"></i>&nbsp;Executed with errors</span>
-                                    @else
-                                    <span class="badge rounded-pill bg-success"><i class="fa-solid fa-check"></i>&nbsp;finished</span>
-                                    @endif
-                                    @else
-                                    @if (\Carbon\Carbon::parse($sendJob->scheduled_at)->greaterThan(\Carbon\Carbon::now()))
-                                    <span data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom" data-bs-content="{{ \Carbon\Carbon::parse($sendJob->scheduled_at ? $sendJob->scheduled_at : $sendJob->created_at)->toDayDateTimeString() }}">
+                                    @switch($sendJob->overall_status)
+                                    @case("scheduled")
 
+                                    <span data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom" data-bs-content="{{ \Carbon\Carbon::parse($sendJob->scheduled_at ? $sendJob->scheduled_at : $sendJob->created_at)->toDayDateTimeString() }}">
                                         <span class="badge bg-info">
                                             <i class="fa-solid fa-clock"></i>
-                                            executing {{ \Carbon\Carbon::parse($sendJob->scheduled_at ? $sendJob->scheduled_at : $sendJob->created_at)->diffForHumans() }}
+                                            scheduled {{ \Carbon\Carbon::parse($sendJob->scheduled_at ? $sendJob->scheduled_at : $sendJob->created_at)->diffForHumans() }}
                                         </span>
                                     </span>
-                                    @else
+
+                                    @break
+
+
+                                    @case("sending")
+
+                                    <span class="badge bg-danger">
+                                        <i class="fa-solid fa-times"></i>
+                                        Sending
+                                    </span>
+
+                                    @break
+
+
+                                    @case("sent")
+
                                     <span data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom" data-bs-content="{{ \Carbon\Carbon::parse($sendJob->scheduled_at ? $sendJob->scheduled_at : $sendJob->created_at)->toDayDateTimeString() }}">
                                         <span class="badge bg-success">
                                             <i class="fa-solid fa-check"></i>
-                                            executed {{ \Carbon\Carbon::parse($sendJob->scheduled_at ? $sendJob->scheduled_at : $sendJob->created_at)->diffForHumans() }}
+                                            {{ $sendJob->overall_status }} {{ \Carbon\Carbon::parse($sendJob->scheduled_at ? $sendJob->scheduled_at : $sendJob->created_at)->diffForHumans() }}
                                         </span><br />
                                         @php
                                         $sentMessages = 0;
@@ -83,10 +92,30 @@
                                         }
                                         }
                                         @endphp
-                                        <span class="badge bg-secondary">{{ $sentMessages }} / {{ count($sendJob->messages) }} sent</span>
                                     </span>
-                                    @endif
-                                    @endif
+
+                                    @break
+
+
+                                    @case("error")
+
+                                    <span class="badge bg-danger">
+                                        <i class="fa-solid fa-times"></i>
+                                        Error executing job
+                                    </span>
+
+                                    @break
+
+                                    @endswitch
+                                    @php
+                                    $sentMessages = 0;
+                                    foreach ($sendJob->messages as $message) {
+                                    if ($message->status == 'sent') {
+                                    $sentMessages++;
+                                    }
+                                    }
+                                    @endphp
+                                    <span class="badge bg-secondary">{{ $sentMessages }} / {{ count($sendJob->messages) }} sent</span>
                                 </td>
                                 <td>{{ $sendJob->message }}</td>
                                 <td>
@@ -128,13 +157,13 @@
                                                                     </span>
                                                                     @break
                                                                     @case('error')
-                                                                    <span class="badge bg-error">
+                                                                    <span class="badge bg-danger">
                                                                         {{ $message->status }}
                                                                     </span>
                                                                     @break
 
                                                                     @default
-                                                                    <span class="badge bg-light">
+                                                                    <span class="badge bg-light text-dark">
                                                                         {{ $message->status }}
                                                                     </span>
                                                                     @break
