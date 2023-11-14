@@ -66,6 +66,7 @@ Route::middleware('auth')->group(function() {
     Route::middleware(['role:admin'])->group(function() {
         Route::resource('/users', UserController::class)->except(['show', 'create']);
         Route::put('/users/{user}/updatepassword', [UserController::class, 'updatePassword'])->name('users.updatepassword');
+        Route::put('/users/{user}/updatedefaultsender', [UserController::class, 'updateDefaultSender'])->name('users.updatedefaultsender');
     });
 });
 

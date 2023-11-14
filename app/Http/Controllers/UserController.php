@@ -36,12 +36,14 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'default_sender' => 'nullable|string|max:11',
             'email' => 'required|email',
             'password' => 'required|min:6|confirmed',
         ]);
 
         $user = User::create([
             'name' => $request->name,
+            'default_sender' => $request->default_sender ? $request->default_sender : null,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -101,6 +103,18 @@ class UserController extends Controller
         $user->save();
 
         return Redirect::route('users.edit', ['user' => $user])->with('success', 'User account password updated succesfully.');
+    }
+
+    public function updateDefaultSender(Request $request, User $user)
+    {
+        $request->validate([
+            'default_sender' => 'nullable|string|max:11'
+        ]);
+
+        $user->default_sender = $request->default_sender;
+        $user->save();
+
+        return Redirect::route('users.edit', ['user' => $user])->with('success', 'SMS sender display name updated succesfully.');
     }
 
     /**
