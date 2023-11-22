@@ -13,6 +13,10 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="{{ asset('cropped-Datasur-Favicon-32x32.png') }}" sizes="32x32">
+    <link rel="icon" href="{{ asset('cropped-Datasur-Favicon-192x192.png') }}" sizes="192x192">
+    <link rel="apple-touch-icon" href="{{ asset('cropped-Datasur-Favicon-180x180.png') }}">
+    <meta name="msapplication-TileImage" content="{{ asset('cropped-Datasur-Favicon-270x270.png') }}">
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
