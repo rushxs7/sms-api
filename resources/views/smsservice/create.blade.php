@@ -86,8 +86,8 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for="message">Message</label>
-                            <textarea class="form-control" id="message" name="message" rows="3" maxlength="140" oninput="updateCharCount(this)"></textarea>
-                            <span id="char-count" class="text-secondary">0 / 140</span>
+                            <textarea class="form-control" id="message" name="message" rows="3" maxlength="160" oninput="updateCharCount(this)"></textarea>
+                            <span id="char-count" class="text-secondary">0 / 160</span>
                         </div>
                         <div class="form-group mb-3">
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -186,10 +186,10 @@
         var charCount = textarea.value.length;
         var span = document.getElementById("char-count");
 
-        span.innerHTML = charCount + " / 140";
+        span.innerHTML = charCount + " / 160";
 
-        if (charCount > 140) {
-            textarea.value = textarea.value.substring(0, 140);
+        if (charCount > 160) {
+            textarea.value = textarea.value.substring(0, 160);
         }
     }
 
