@@ -20,6 +20,7 @@ jobs:
             git pull origin develop
             git status
             composer install --optimize-autoloader
+            awk '{ sub("WWW","SMPP"); print }' vendor/alexandr-mironov/php8-smpp/src/Client.php > vendor/alexandr-mironov/php8-smpp/src/Client.php
             php artisan migrate --force
             php artisan l5-swagger:generate
             npm i
