@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\SendSms;
 use App\Models\SendJob;
 use App\Models\SMSMessage;
+use App\Rules\LaterThanNow;
 use App\Rules\ValidNumbers;
 use Carbon\Carbon;
 use Exception;
@@ -60,9 +61,8 @@ class SendJobController extends Controller
             'bulk' => 'boolean',
             'recipients' => ['required', 'array', new ValidNumbers],
             'message' => 'required',
-            'scheduled_at' => 'required_if:type,scheduled',
+            'scheduled_at' => ['required_if:type,scheduled', new LaterThanNow],
         ]);
-        // dd($request);
 
         $count = 0;
         foreach ($request->recipients as $phoneNumber)
