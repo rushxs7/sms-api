@@ -4,34 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SendJob extends Model
+class Transaction extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'user_id',
-        'type',
-        'bulk',
-        'message',
-        'scheduled_at',
-        'sent_at',
-        'error',
+        'transaction_type',
+        'amount',
+        'description',
+        'transactionable_id',
+        'transactionable_type',
     ];
-
-    public function messages()
-    {
-        return $this->hasMany(SMSMessage::class, 'job_id', 'id');
-    }
 
     public function users()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function transactions()
+    public function transactionable(): MorphTo
     {
-        return $this->morphOne(Transaction::class, 'transactionable');
+        return $this->morphTo();
     }
 }
