@@ -11,6 +11,7 @@ class SendJob extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'user_id',
         'type',
         'bulk',
         'message',
@@ -22,5 +23,10 @@ class SendJob extends Model
     public function messages()
     {
         return $this->hasMany(SMSMessage::class, 'job_id', 'id');
+    }
+
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

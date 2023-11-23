@@ -47,10 +47,17 @@ class AccountController extends Controller
     public function passwordReset(Request $request)
     {
         $request->validate([
+            'current_password' => 'required',
             'password' => 'required|string|min:6|confirmed'
         ]);
 
         $user = User::findOrFail(Auth::id());
+
+        if (!(Hash::check($request->current_password, $user->password))) {
+            return Redirect::back()->withErrors(['current_password' => 'Current password does not match our records.']);
+        }
+
+
         $user->password = Hash::make($request->password);
         $user->save();
 
@@ -59,6 +66,6 @@ class AccountController extends Controller
 
     public function myCredits(Request $request)
     {
-        return view('mycredits');
+        return view('credits.index');
     }
 }

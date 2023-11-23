@@ -85,6 +85,10 @@
                     <form action="{{ route('myaccount.passwordreset') }}" method="POST" autocomplete="off">
                         @csrf
                         <div class="mb-3">
+                            <label for="current_password" class="form-label">Current password</label>
+                            <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter your current password">
+                        </div>
+                        <div class="mb-3">
                             <label for="password" class="form-label">New password</label>
                             <input type="password" class="form-control" id="password" name="password" placeholder="Enter your new password">
                         </div>
