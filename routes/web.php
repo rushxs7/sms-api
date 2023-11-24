@@ -29,7 +29,7 @@ Route::get('/', function () {
     return redirect('login');
 
 });
-Route::middleware(['auth', 'verified'])->group(function() {
+Route::middleware(['auth'])->group(function() {
     Route::get('/test', function(Request $request) {
         // $sendJob = SendJob::findOrFail(12);
         // $sendJob->load(['messages']);
