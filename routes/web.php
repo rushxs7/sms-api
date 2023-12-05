@@ -40,7 +40,7 @@ Route::middleware(['auth'])->group(function() {
         ->timeout(30)
         ->post("https://payment.uni5pay.sr/v1/qrcode_get");
 
-        dd($response);
+        dd($response->body());
     });
 
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
