@@ -32,21 +32,7 @@ Route::get('/', function () {
 });
 Route::middleware(['auth'])->group(function() {
     Route::get('/test', function(Request $request) {
-        $response = Http::withHeaders([
-            'apiKey'  => env("UNI5PAY_API_KEY"),
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-        ])
-        ->timeout(30)
-        ->post("https://payment.uni5pay.sr/v1/qrcode_get", [
-            "mchtOrderNo" => 200,
-            "terminalId" => "SAB",
-            "amount" => 30.23,
-            "currency" => 968,
-            "url_success" => "https://google.com"
-        ]);
-
-        dd($response->body());
+        //
     });
 
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
