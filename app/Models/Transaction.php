@@ -12,6 +12,7 @@ class Transaction extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'organization_id',
         'user_id',
         'transaction_type',
         'amount',
@@ -23,6 +24,11 @@ class Transaction extends Model
     public function users()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class, 'organization_id', 'id');
     }
 
     public function transactionable(): MorphTo

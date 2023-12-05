@@ -9,6 +9,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,13 +32,15 @@ Route::get('/', function () {
 });
 Route::middleware(['auth'])->group(function() {
     Route::get('/test', function(Request $request) {
-        // $sendJob = SendJob::findOrFail(12);
-        // $sendJob->load(['messages']);
+        $response = Http::withHeaders([
+            'apiKey'  => env("UNI5PAY_API_KEY"),
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ])
+        ->timeout(30)
+        ->post("https://payment.uni5pay.sr/v1/qrcode_get");
 
-        // $scheduled_at = Carbon::parse($sendJob->scheduled_at);
-        // $difference = Carbon::now()->diffInMinutes($scheduled_at);
-
-        // dd($difference);
+        dd($response);
     });
 
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
@@ -67,6 +70,11 @@ Route::middleware(['auth'])->group(function() {
         Route::resource('/users', UserController::class)->except(['show', 'create']);
         Route::put('/users/{user}/updatepassword', [UserController::class, 'updatePassword'])->name('users.updatepassword');
         Route::put('/users/{user}/updatedefaultsender', [UserController::class, 'updateDefaultSender'])->name('users.updatedefaultsender');
+    });
+
+    Route::prefix('/webhooks')->group(function() {
+        Route::get('/mope', function(Request $request) {});
+        Route::get('/uni5pay', function(Request $request) {});
     });
 });
 

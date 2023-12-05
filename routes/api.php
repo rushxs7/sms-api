@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\SmsController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,12 @@ Route::middleware('auth:sanctum')->group(function() {
         // Route::get('/', [HistoryController::class, 'index'])->name('history.index');
         // Route::get('/{smsUuid}', [HistoryController::class, 'show'])->name('history.show');
         // Route::get('/{smsUuid}/isSent', [HistoryController::class, 'isSent'])->name('history.isSent');
+    });
+
+    Route::prefix('/payments')->group(function() {
+        Route::prefix('/uni5pay')->group( function() {
+            Route::get('/generateQRcode', [TransactionController::class, 'generateQRCode']);
+        });
     });
 });
 

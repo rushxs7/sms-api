@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class TransactionController extends Controller
 {
@@ -61,5 +62,18 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction)
     {
         //
+    }
+
+    public function generateQRCode(Request $request)
+    {
+        $response = Http::withHeaders([
+                'apiKey'  => env("UNI5PAY_API_KEY"),
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ])
+            ->timeout(30)
+            ->post("https://payment.uni5pay.sr/v1/qrcode_get");
+
+        dd($response);
     }
 }
