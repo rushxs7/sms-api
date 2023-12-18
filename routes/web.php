@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SendJobController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Models\SendJob;
 use App\Models\User;
@@ -65,8 +66,9 @@ Route::middleware(['auth'])->group(function() {
     });
 
     Route::prefix('/webhooks')->group(function() {
-        Route::get('/mope', function(Request $request) {});
-        Route::get('/uni5pay', function(Request $request) {});
+        Route::get('/mope/qrcode', [TransactionController::class, 'generateQRCode'])->name('mope.generateqrcode');
+        Route::get('/mope/link', [TransactionController::class, 'generatePaymentLink'])->name('mope.generateqrcode');
+        Route::get('/uni5pay', [TransactionController::class, 'generateUni5payLink'])->name('uni5pay.generatelink');
     });
 });
 

@@ -39,7 +39,12 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::prefix('/payments')->group(function() {
         Route::prefix('/uni5pay')->group( function() {
-            Route::get('/generateQRcode', [TransactionController::class, 'generateQRCode']);
+            Route::get('/generateQRcode', [TransactionController::class, 'generateUni5payQRCode']);
+            Route::get('/generatelink', [TransactionController::class, 'generateUni5payPaymentLink']);
+        });
+
+        Route::prefix('/mope')->group(function() {
+            Route::get('/generatelink', [TransactionController::class, 'generateMopeLink']);
         });
     });
 });
