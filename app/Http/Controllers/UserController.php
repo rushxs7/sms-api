@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,11 +42,14 @@ class UserController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
 
+        $datasurOrg = Organization::where('name', 'Datasur')->first();
+
         $user = User::create([
             'name' => $request->name,
             'default_sender' => $request->default_sender ? $request->default_sender : null,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'organization_id' => $datasurOrg->id,
         ]);
 
         $loggedInUser = Auth::user();
@@ -55,7 +59,6 @@ class UserController extends Controller
         } else {
             $user->assignRole('default');
         }
-
 
         return Redirect::route('users.index')->with('success', 'New user account created succesfully.');
     }
