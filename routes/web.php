@@ -48,6 +48,8 @@ Route::middleware(['auth'])->group(function() {
     });
 
     Route::get('/my-account', [AccountController::class, 'myAccount'])->name('myaccount');
+    Route::post('/my-account/tokens/create', [AccountController::class, 'createToken'])->name('myaccount.createtoken');
+    Route::delete('/my-account/tokens/{tokenId}/revoke', [AccountController::class, 'revokeToken'])->name('myaccount.revoketoken');
     Route::post('/my-account/save-personal-info', [AccountController::class, 'savePersonalInfo'])->name('myaccount.savepersonalinfo');
     Route::post('/my-account/save-sender-info', [AccountController::class, 'saveSenderInfo'])->name('myaccount.savesenderinfo');
     Route::post('/my-account/password-reset', [AccountController::class, 'passwordReset'])->name('myaccount.passwordreset');

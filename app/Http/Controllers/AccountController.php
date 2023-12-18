@@ -13,7 +13,9 @@ class AccountController extends Controller
     public function myAccount(Request $request)
     {
         $user = Auth::user();
-        return view('myaccount', ['user' => $user]);
+        $tokens = $user->tokens()->get();
+        // dd($tokens);
+        return view('myaccount', ['user' => $user, 'tokens' => $tokens]);
     }
 
     public function savePersonalInfo(Request $request)
@@ -62,6 +64,25 @@ class AccountController extends Controller
         $user->save();
 
         return Redirect::back()->with('success', 'Password was updated successfully.');
+    }
+
+    public function createToken(Request $request)
+    {
+        $request->validate([
+            'name' => 'required'
+        ]);
+        $user = Auth::user();
+        $token = $user->createToken($request->name);
+
+        return Redirect::back()->with('success', 'New token (' . $request->name . ') created successfully.');
+    }
+
+    public function revokeToken($tokenId, Request $request)
+    {
+        $user = Auth::user();
+        $token = $user->tokens()->where('token', $tokenId)->delete();
+
+        return Redirect::back()->with('success', 'Token succesfully revoked');
     }
 
     public function myCredits(Request $request)

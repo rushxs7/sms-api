@@ -43,9 +43,9 @@
             <li class="nav-item">
               <a class="nav-link @if(Route::is('smsservice*')) active @endif" aria-current="page" href="{{ route('smsservice.index') }}">SMS Center</a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
               <a class="nav-link @if(Route::is('mycredits')) active @endif" aria-current="page" href="{{ route('mycredits') }}">My Credits</a>
-            </li>
+            </li> --}}
           </ul>
           @endauth
 
@@ -65,12 +65,12 @@
             </li>
             @endif
             @else
-            <li class="nav-item me-2">
+            {{-- <li class="nav-item me-2">
               <a href="#" style="text-decoration: none;">
                 <div class="text-dark">Balance:</div>
                 <strong class="text-danger">$50,000.00</strong>
               </a>
-            </li>
+            </li> --}}
             <li class="nav-item dropdown">
               <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                 <i class="fa-solid fa-user"></i>
