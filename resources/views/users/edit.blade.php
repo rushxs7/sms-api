@@ -51,6 +51,15 @@
               <label for="email" class="form-label">Email</label>
               <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}">
             </div>
+            <div class="mb-3">
+              <label for=""></label>
+              <select class="form-select">
+                <option value="0">Please select...</option>
+                @foreach ($organizations as $organization)
+                <option value="{{ $organization->id }}" @if($user->organization_id == $organization->id) selected @endif>{{ $organization->name }}</option>
+                @endforeach
+              </select>
+            </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
         </div>
@@ -71,7 +80,7 @@
             @csrf
             <div class="mb-3">
               <label for="default_sender" class="col-form-label">Sender Display Name</label>
-              <input type="text" class="form-control" id="default_sender" name="default_sender" value="{{ $user->default_sender }}" placeholder="{{ env("SMPP_DEFAULT_SENDER") }}">
+              <input type="text" class="form-control" id="default_sender" name="default_sender" value="{{ $user->organizations->default_sender }}" placeholder="{{ env("SMPP_DEFAULT_SENDER") }}">
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>

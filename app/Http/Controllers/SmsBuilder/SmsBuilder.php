@@ -58,7 +58,7 @@ class SmsBuilder
         $this->login = $login;
         $this->password = $password;
 
-        $this->from = new Address($user->default_sender ? $user->default_sender : self::DEFAULT_SENDER, SMPP::TON_ALPHANUMERIC);
+        $this->from = new Address($user->organizations->default_sender ? $user->organizations->default_sender : self::DEFAULT_SENDER, SMPP::TON_ALPHANUMERIC);
     }
 
     /**

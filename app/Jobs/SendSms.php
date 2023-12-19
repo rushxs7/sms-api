@@ -33,7 +33,7 @@ class SendSms implements ShouldQueue
     public function __construct(SMSMessage $message, User $user)
     {
         $this->message = $message;
-        $this->user = $user;
+        $this->user = $user->load(['organizations']);
     }
 
     /**

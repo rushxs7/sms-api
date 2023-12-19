@@ -72,7 +72,11 @@ class UserController extends Controller
     public function edit(User $user, Request $request)
     {
         $user->load(['tokens']);
-        return view('users.edit', ['user' => $user]);
+        $organizations = Organization::all();
+        return view('users.edit', [
+            'user' => $user,
+            'organizations' => $organizations
+        ]);
     }
 
     /**
@@ -87,10 +91,12 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
+            'organization_id' => 'required|integer'
         ]);
 
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->organization_id = $request->organization_id;
         $user->save();
 
         return Redirect::route('users.edit', ['user' => $user])->with('success', 'User account updated succesfully.');
@@ -114,8 +120,9 @@ class UserController extends Controller
             'default_sender' => 'nullable|string|max:11'
         ]);
 
-        $user->default_sender = $request->default_sender;
-        $user->save();
+        $organization = $user->organizations;
+        $organization->default_sender = $request->default_sender;
+        $organization->save();
 
         return Redirect::route('users.edit', ['user' => $user])->with('success', 'SMS sender display name updated succesfully.');
     }
