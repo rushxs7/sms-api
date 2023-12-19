@@ -82,7 +82,13 @@ class AccountController extends Controller
         $user = Auth::user();
         $token = $user->tokens()->where('token', $tokenId)->delete();
 
-        return Redirect::back()->with('success', 'Token succesfully revoked');
+        // dd($token);
+        if($token) {
+            return Redirect::back()->with('success', 'Token succesfully revoked');
+        } else {
+            return Redirect::back()->with('error', 'Token revoke failed.');
+        }
+
     }
 
     public function myCredits(Request $request)

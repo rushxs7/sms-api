@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SendJobController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
@@ -65,6 +66,8 @@ Route::middleware(['auth'])->group(function() {
         Route::resource('/users', UserController::class)->except(['show', 'create']);
         Route::put('/users/{user}/updatepassword', [UserController::class, 'updatePassword'])->name('users.updatepassword');
         Route::put('/users/{user}/updatedefaultsender', [UserController::class, 'updateDefaultSender'])->name('users.updatedefaultsender');
+
+        Route::resource('/organizations', OrganizationController::class)->except(['show', 'create']);
     });
 
     Route::prefix('/webhooks')->group(function() {

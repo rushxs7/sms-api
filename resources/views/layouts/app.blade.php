@@ -20,6 +20,7 @@
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
@@ -82,6 +83,9 @@
                 </a>
                 <a class="dropdown-item" href="{{ route('users.index') }}">
                   {{ __('User Management') }}
+                </a>
+                <a class="dropdown-item" href="{{ route('organizations.index') }}">
+                  {{ __('Organization Management') }}
                 </a>
                 <hr class="dropdown-divider">
                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">

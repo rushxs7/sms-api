@@ -127,11 +127,11 @@
                   <td>{{ $token->token }}</td>
                   {{-- <td>{{ $token->expires_at ? \Carbon\Carbon::parse($token->expires_at)->toDateTimeString() : 'No expiration.' }}</td> --}}
                   <td>
-                    <form action="{{ route('myaccount.revoketoken', ['tokenId' => $token->token]) }}">
+                    <form action="{{ route('myaccount.revoketoken', ['tokenId' => $token->token]) }}" method="POST">
                       @csrf
                       @method('DELETE')
                       <div class="btn-group">
-                        <button class="btn btn-sm btn-outline-primary" onclick="copyToken(this)"><i class="fa-solid fa-copy"></i></button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="event.preventDefault(); copyToken(this)"><i class="fa-solid fa-copy"></i></button>
                         <button class="btn btn-sm btn-outline-danger" type="submit"><i class="fa fa-trash"></i></button>
                       </div>
                     </form>
@@ -183,5 +183,26 @@
 @endsection
 
 @section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  function copyToken(element) {
+    var token = $(element).parent().parent().parent().prev().text()
+    // console.log(copyButton)
+    navigator.clipboard.writeText(token).then(function() {
+      // Success message
+      Swal.fire({
+        toast: true
+        , showConfirmButton: false
+        , position: 'top-end'
+        , icon: 'success'
+        , timer: 3000
+        , timerProgressBar: true
+        , title: 'Token copied successfully!'
+      });
+    }, function(err) {
+      // Error message
+    });
+  }
 
+</script>
 @endsection
