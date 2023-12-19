@@ -132,7 +132,7 @@
                       @method('DELETE')
                       <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-outline-primary" onclick="event.preventDefault(); copyToken(this)"><i class="fa-solid fa-copy"></i></button>
-                        <button class="btn btn-sm btn-outline-danger" type="submit"><i class="fa fa-trash"></i></button>
+                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="event.preventDefault(); deletionForm(this)"><i class="fa fa-trash"></i></button>
                       </div>
                     </form>
                   </td>
@@ -202,6 +202,14 @@
     }, function(err) {
       // Error message
     });
+  }
+
+  const deletionForm = function(formElement) {
+    if (!confirm('Are you sure you want to delete this token?')) {
+      return false;
+    }
+    return $(formElement).parent().parent().submit()
+    // return formElement.submit();
   }
 
 </script>

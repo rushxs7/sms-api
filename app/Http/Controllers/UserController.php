@@ -71,10 +71,12 @@ class UserController extends Controller
      */
     public function edit(User $user, Request $request)
     {
-        $user->load(['tokens']);
+        $user->load(['tokens', 'organizations']);
+        $tokens = $user->tokens()->get();
         $organizations = Organization::all();
         return view('users.edit', [
             'user' => $user,
+            'tokens' => $tokens,
             'organizations' => $organizations
         ]);
     }
