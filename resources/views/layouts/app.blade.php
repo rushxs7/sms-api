@@ -81,12 +81,14 @@
                 <a class="dropdown-item" href="{{ route('myaccount') }}">
                   {{ __('My Account') }}
                 </a>
+                @role('admin')
                 <a class="dropdown-item" href="{{ route('users.index') }}">
                   {{ __('User Management') }}
                 </a>
                 <a class="dropdown-item" href="{{ route('organizations.index') }}">
                   {{ __('Organization Management') }}
                 </a>
+                @endrole
                 <hr class="dropdown-divider">
                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                   {{ __('Logout') }}
