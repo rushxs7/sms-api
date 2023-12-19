@@ -65,7 +65,7 @@ class TransactionController extends Controller
         //
     }
 
-    public function generateQRCode(Request $request)
+    public function generateUni5payQRCode(Request $request)
     {
         $response = Http::withHeaders([
             'apiKey'  => env("UNI5PAY_API_KEY"),
@@ -78,6 +78,48 @@ class TransactionController extends Controller
             "amount" => "30",
             "currency" => "968",
             "url_success" => "https://google.com"
+        ]);
+
+        $response = json_decode($response->body());
+
+        return response()->json($response, 200);
+    }
+
+    public function generateUni5payLink(Request $request)
+    {
+        $response = Http::withHeaders([
+            'apiKey' => env('UNI5PAY_API_KEY')
+        ])
+        ->timeout(30)
+        ->retry(5, 250)
+        ->post("https://payment.uni5pay.sr/v1/qrcode_online", [
+            "mchtOrderNo" => "200",
+            "terminalId" => "SAR",
+            "payment_desc" => "This is a test payment",
+            "amount" => "30",
+            "currency" => "968",
+            "url_success" => "https://www.google.com/",
+            "url_failure" => "https://www.newegg.com/",
+            "url_notify" => "https://www.facebook.com/"
+        ]);
+
+        $response = json_decode($response->body());
+
+        return response()->json($response, 200);
+    }
+
+    public function generateMopeLink(Request $request)
+    {
+        $response = Http::withHeaders([
+            'Authorization' => "Bearer " . env('MOPE_API_KEY')
+        ])
+        ->retry(3, 250)
+        ->post("https://api.mope.sr/api/shop/payment_request", [
+            "description" => "Order for a lot of beer",
+            "amount" => "123400",
+            "order_id" => "beer-order-id-87835822",
+            "currency" => "SRD",
+            "redirect_url" => "https://google.com"
         ]);
 
         $response = json_decode($response->body());
