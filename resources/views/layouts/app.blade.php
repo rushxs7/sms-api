@@ -18,6 +18,8 @@
   <link rel="apple-touch-icon" href="{{ asset('cropped-Datasur-Favicon-180x180.png') }}">
   <meta name="msapplication-TileImage" content="{{ asset('cropped-Datasur-Favicon-270x270.png') }}">
 
+  @livewireStyles
+
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -109,6 +111,8 @@
       @yield('content')
     </main>
   </div>
+  @livewireScripts
+
   @yield('scripts')
 </body>
 </html>

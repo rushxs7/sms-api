@@ -35,7 +35,7 @@
     <div class="col-3">
       <h4 class="ps-2 pt-3">Organization Management</h4>
       <hr>
-      <button class="btn btn-primary d-block" data-bs-toggle="modal" data-bs-target="#createOrganizationModal">
+      <button class="btn btn-primary d-block" data-bs-toggle="modal" data-bs-target="#createOrganizationModal" id="newOrganizationButton">
         <i class="fa-solid fa-plus"></i>
         New Organization
       </button>
@@ -53,29 +53,7 @@
             </thead>
             <tbody>
               @forelse ($organizations as $organization)
-              <tr>
-                <td>
-                  {{ $organization->name }}
-                  @if($organization->deleted_at)
-                  <span class="badge bg-danger">Disabled</span>
-                  @endif</td>
-                <td>
-                  {{ $organization->default_sender }}
-                </td>
-                <td>
-                  @if(!$organization->deleted_at)
-                  <a href="{{ route('organizations.edit', ['organization' => $organization]) }}" class="btn btn-sm btn-outline-warning">
-                    <i class="fa-solid fa-pencil"></i>
-                  </a>
-
-                  <form action="{{ route('organizations.destroy', ['organization' => $organization]) }}" method="POST" onsubmit="event.preventDefault(); deletionForm(this)" class="d-inline deletionForm">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-sm btn-danger ms-1" data-bs-toggle="tooltip" data-bs-title="Delete category"><i class="fa-solid fa-trash"></i></button>
-                  </form>
-                  @endif
-                </td>
-              </tr>
+              @livewire('organization-row', ['organization' => $organization])
               @empty
               <tr>
                 <td colspan="3">No organizations</td>
@@ -124,6 +102,16 @@
 @endsection
 
 @section('scripts')
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
+@if (request('action') == 'new')
+<script>
+  window.onload = function() {
+    var modalButton = document.getElementById("newOrganizationButton")
+    modalButton.click()
+  }
+
+</script>
+@endif
 <script>
   const deletionForm = function(formElement) {
     if (!confirm('Are you sure you want to delete this organization?')) {

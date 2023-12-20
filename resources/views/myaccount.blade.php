@@ -139,9 +139,7 @@
                 </tr>
                 @empty
                 <tr>
-                  <td>No API tokens</td>
-                  <td></td>
-                  <td></td>
+                  <td colspan="3">No API tokens</td>
                 </tr>
                 @endforelse
               </tbody>

@@ -24,7 +24,12 @@ class UserController extends Controller
             ->withTrashed()
             ->paginate(10);
 
-        return view('users.index', ['users' => $users]);
+        $organizations = Organization::all();
+
+        return view('users.index', [
+            'users' => $users,
+            'organizations' => $organizations
+        ]);
     }
 
     /**
@@ -37,16 +42,15 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'default_sender' => 'nullable|string|max:11',
             'email' => 'required|email',
             'password' => 'required|min:6|confirmed',
+            'organization_id' => 'required|integer',
         ]);
 
         $datasurOrg = Organization::where('name', 'Datasur')->first();
 
         $user = User::create([
             'name' => $request->name,
-            'default_sender' => $request->default_sender ? $request->default_sender : null,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'organization_id' => $datasurOrg->id,
