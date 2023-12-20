@@ -194,10 +194,10 @@
         toast: true
         , showConfirmButton: false
         , position: 'top-end'
-        , icon: 'success'
+        , icon: 'info'
         , timer: 3000
-        , timerProgressBar: true
-        , title: 'Token copied successfully!'
+        , timerProgressBar: false
+        , title: 'Token copied to clipboard.'
       });
     }, function(err) {
       // Error message
