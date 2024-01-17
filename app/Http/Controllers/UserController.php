@@ -47,13 +47,11 @@ class UserController extends Controller
             'organization_id' => 'required|integer',
         ]);
 
-        $datasurOrg = Organization::where('name', 'Datasur')->first();
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'organization_id' => $datasurOrg->id,
+            'organization_id' => $request->organization_id,
         ]);
 
         $user->assignRole($request->role);
