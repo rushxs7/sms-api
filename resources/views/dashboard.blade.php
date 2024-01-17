@@ -89,7 +89,7 @@
               </tr>
             </thead>
             <tbody>
-              @foreach ($jobs as $job)
+              @forelse ($jobs as $job)
               <tr>
                 <td>{{ $job->type }}</td>
                 @php
@@ -103,7 +103,11 @@
                 <td>{{ $sentMessages }} / {{ count($job->messages) }} sent</td>
                 <td>{{ $job->scheduled_at ? \Carbon\Carbon::parse($job->scheduled_at)->toDayDateTimeString() : \Carbon\Carbon::parse($job->created_at)->toDayDateTimeString() }}</td>
               </tr>
-              @endforeach
+              @empty
+              <tr>
+                <td colspan="3">No send jobs</td>
+              </tr>
+              @endforelse
             </tbody>
           </table>
           <div class="d-flex justify-content-end">
