@@ -66,7 +66,7 @@
             @csrf
             <div class="mb-3">
               <label for="default_sender" class="form-label">Default sender</label>
-              <input type="text" class="form-control" id="default_sender" name="default_sender" value="{{ $user->default_sender }}" placeholder="{{ env("SMPP_DEFAULT_SENDER") }}" required>
+              <input type="text" class="form-control" id="default_sender" name="default_sender" value="{{ $user->organizations->default_sender }}" placeholder="{{ env("SMPP_DEFAULT_SENDER") }}" required>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>

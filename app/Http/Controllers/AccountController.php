@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,7 @@ class AccountController extends Controller
     public function myAccount(Request $request)
     {
         $user = Auth::user();
+        $user->load(['organizations']);
         $tokens = $user->tokens()->get();
         // dd($tokens);
         return view('myaccount', ['user' => $user, 'tokens' => $tokens]);
@@ -40,8 +42,9 @@ class AccountController extends Controller
         ]);
 
         $user = User::findOrFail(Auth::id());
-        $user->default_sender = $request->default_sender;
-        $user->save();
+        $organization = Organization::findOrFail($user->organization_id);
+        $organization->default_sender = $request->default_sender;
+        $organization->save();
 
         return Redirect::back()->with('success', 'Default sender info was updated successfully.');
     }
