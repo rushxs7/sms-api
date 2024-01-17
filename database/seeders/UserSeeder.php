@@ -28,12 +28,21 @@ class UserSeeder extends Seeder
         Permission::create(['name' => 'manage_organizations']);
         Permission::create(['name' => 'manage_organization_users']);
         Permission::create(['name' => 'manage_organization_sender']);
+        Permission::create(['name' => 'view_jobs']);
+        Permission::create(['name' => 'create_jobs']);
+        Permission::create(['name' => 'cancel_jobs']);
 
         $superAdmin->givePermissionTo('manage_users');
         $superAdmin->givePermissionTo('manage_organizations');
+        $superAdmin->givePermissionTo('view_jobs');
+        $superAdmin->givePermissionTo('create_jobs');
+        $superAdmin->givePermissionTo('cancel_jobs');
 
         $orgAdmin->givePermissionTo('manage_organization_users');
         $orgAdmin->givePermissionTo('manage_organization_sender');
+        $orgAdmin->givePermissionTo('view_jobs');
+        $orgAdmin->givePermissionTo('create_jobs');
+        $orgAdmin->givePermissionTo('cancel_jobs');
 
         $datasurOrg = Organization::where('name', 'Datasur')->first();
 

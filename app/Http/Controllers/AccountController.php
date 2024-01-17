@@ -72,6 +72,7 @@ class AccountController extends Controller
     public function myOrganization(Request $request)
     {
         $orgUsers = User::where('organization_id', Auth::user()->organization_id)
+            ->withoutRole('superadmin')
             ->paginate(10);
 
         return view('myorganization', ['orgUsers' => $orgUsers]);
@@ -86,23 +87,33 @@ class AccountController extends Controller
             'role' => 'required|in:orgadmin,default'
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'organization_id' => Auth::user()->organization_id
         ]);
 
+        $user->assignRole($request->role);
+
         return Redirect::route('myorg.index')->with('success', 'New organization user created successfully.');
     }
 
     public function editOrgUser(Request $request, User $user)
     {
+        if (Auth::user()->organization_id != $user->organization_id) {
+            abort(403);
+        }
+
         return view('users.orgedit', ['user' => $user]);
     }
 
     public function updateOrgUser(Request $request, User $user)
     {
+        if (Auth::user()->organization_id != $user->organization_id) {
+            abort(403);
+        }
+
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
@@ -120,6 +131,10 @@ class AccountController extends Controller
 
     public function updateOrgUserPassword(Request $request, User $user)
     {
+        if (Auth::user()->organization_id != $user->organization_id) {
+            abort(403);
+        }
+
         $request->validate([
             'password' => 'required|min:6|confirmed'
         ]);
@@ -132,7 +147,11 @@ class AccountController extends Controller
 
     public function deleteOrgUser(Request $request, User $user)
     {
-        if (Auth::id() == $user->id) {
+        if (Auth::user()->organization_id != $user->organization_id) {
+            abort(403);
+        }
+
+        if (Auth::id() != $user->id) {
             $user->delete();
             return Redirect::back()->with('success', 'Deleted organization user successfully.');
         }

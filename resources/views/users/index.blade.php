@@ -88,9 +88,15 @@
                   <form action="{{ route('users.destroy', ['user' => $user]) }}" method="POST" onsubmit="event.preventDefault(); deletionForm(this)" class="d-inline deletionForm">
                     @csrf
                     @method('DELETE')
-                    <button class="btn btn-sm btn-danger ms-1" data-bs-toggle="tooltip" data-bs-title="Delete category"><i class="fa-solid fa-trash"></i></button>
+                    <button class="btn btn-sm btn-danger ms-1" data-bs-toggle="tooltip" data-bs-title="Disable user"><i class="fa-solid fa-trash"></i></button>
+                  </form>
+                  @else
+                  <form action="{{ route('users.enable', ['user' => $user]) }}" method="POST" class="d-inline">
+                    @csrf
+                    <button class="btn btn-sm btn-warning ms-1" data-bs-toggle="tooltip" data-bs-title="Enable user"><i class="fa-solid fa-trash-can-arrow-up"></i></button>
                   </form>
                   @endif
+
                 </td>
               </tr>
               @empty
@@ -162,7 +168,8 @@
             <div class="col-sm-9">
               <select class="form-select" id="role" name="role">
                 <option value="default">Default User</option>
-                <option value="admin">Admin</option>
+                <option value="orgadmin">Organization Administrator</option>
+                <option value="superadmin">Super Administrator</option>
               </select>
             </div>
           </div>

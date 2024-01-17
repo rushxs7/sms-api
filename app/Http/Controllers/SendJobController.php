@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\SendSms;
 use App\Models\SendJob;
 use App\Models\SMSMessage;
+use App\Models\User;
 use App\Rules\LaterThanNow;
 use App\Rules\ValidNumbers;
 use Carbon\Carbon;
@@ -26,7 +27,10 @@ class SendJobController extends Controller
      */
     public function index()
     {
-        $sendJobs = SendJob::with('messages')
+        $orgUserCollection = User::where('organization_id', Auth::user()->organization_id)->get()->pluck('id')->toArray();
+
+        $sendJobs = SendJob::whereIn('user_id', $orgUserCollection)
+            ->with('messages')
             ->latest()
             ->paginate(12);
 
@@ -93,6 +97,7 @@ class SendJobController extends Controller
         }
 
         $job = SendJob::create([
+            'user_id' => Auth::id(),
             'type' => $request->type,
             'bulk' => $request->bulk ? true : false,
             'message' => $request->message,
@@ -128,6 +133,11 @@ class SendJobController extends Controller
      */
     public function show(SendJob $sendJob)
     {
+        $user = User::findOrFail($sendJob->user_id);
+        if (Auth::user()->organization_id != $user->organization_id) {
+            abort(403);
+        }
+
         $sendJob->load(['messages']);
 
         $overallStatus = $this->getOverallStatus($sendJob->messages);

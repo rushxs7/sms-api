@@ -28,7 +28,9 @@ class SMSSeeder extends Seeder
                 $type = $types[$typesIndex];
                 $bulk = $faker->boolean();
                 $message = $faker->text(140);
+                $randomUser = User::inRandomOrder()->first();
                 $job = SendJob::create([
+                    'user_id' => $randomUser->id,
                     'type' => $type,
                     'bulk' => $bulk,
                     'message' => $message,
@@ -55,7 +57,6 @@ class SMSSeeder extends Seeder
                     $smsMessage = SMSMessage::where('id', $smsMessage->id)
                         ->with(['jobs'])
                         ->first();
-                    $randomUser = User::inRandomOrder()->first();
 
                     if($job->type == 'instant'){
                         SendSms::dispatch($smsMessage, $randomUser);

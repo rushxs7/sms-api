@@ -27,8 +27,10 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $user = User::findOrFail(Auth::id());
+        $orgUserCollection = User::where('organization_id', Auth::user()->organization_id)->get()->pluck('id')->toArray();
         $unreadNotifications = $user->unreadNotifications;
-        $jobs = SendJob::with(['messages'])
+        $jobs = SendJob::whereIn('user_id', $orgUserCollection)
+            ->with(['messages'])
             ->latest()
             ->take(5)
             ->get();

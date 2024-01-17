@@ -76,6 +76,7 @@ Route::middleware(['auth'])->group(function() {
 
     Route::middleware(['role:superadmin'])->group(function() {
         Route::resource('/users', UserController::class)->except(['show', 'create']);
+        Route::post('/users/{user}/restore', [UserController::class, 'enable'])->name('users.enable');
         Route::put('/users/{user}/updatepassword', [UserController::class, 'updatePassword'])->name('users.updatepassword');
         Route::put('/users/{user}/updatedefaultsender', [UserController::class, 'updateDefaultSender'])->name('users.updatedefaultsender');
 

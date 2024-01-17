@@ -56,13 +56,7 @@ class UserController extends Controller
             'organization_id' => $datasurOrg->id,
         ]);
 
-        $loggedInUser = Auth::user();
-
-        if (Auth::user()->hasRole('admin')) {
-            $user->assignRole($request->role);
-        } else {
-            $user->assignRole('default');
-        }
+        $user->assignRole($request->role);
 
         return Redirect::route('users.index')->with('success', 'New user account created succesfully.');
     }
@@ -143,5 +137,12 @@ class UserController extends Controller
     {
         $user->delete();
         return Redirect::route('users.index')->with('success', 'User account disabled succesfully.');
+    }
+
+    public function enable(int $user)
+    {
+        $user = User::withTrashed()->where('id', $user)->first();
+        $user->restore();
+        return Redirect::route('users.index')->with('success', 'User account enabled succesfully.');
     }
 }

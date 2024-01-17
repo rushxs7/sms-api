@@ -30,6 +30,7 @@
                                 <th>Type</th>
                                 <th>Status</th>
                                 <th>Message</th>
+                                <th>Job created by</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -118,6 +119,7 @@
                                     <span class="badge bg-secondary">{{ $sentMessages }} / {{ count($sendJob->messages) }} sent</span>
                                 </td>
                                 <td>{{ $sendJob->message }}</td>
+                                <td>{{ $sendJob->users->name }}</td>
                                 <td>
                                     <div class="d-flex align-items-stretch justify-content-end">
                                         <a href="{{ route('smsservice.show', ['sendJob' => $sendJob->id]) }}" class="btn btn-primary btn-sm ms-1">

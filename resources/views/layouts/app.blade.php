@@ -43,9 +43,11 @@
             <li class="nav-item">
               <a class="nav-link @if(Route::is('dashboard')) active @endif" aria-current="page" href="{{ route('dashboard') }}">Dashboard</a>
             </li>
+            @can('view_jobs')
             <li class="nav-item">
               <a class="nav-link @if(Route::is('smsservice*')) active @endif" aria-current="page" href="{{ route('smsservice.index') }}">SMS Center</a>
             </li>
+            @endcan
             {{-- <li class="nav-item">
               <a class="nav-link @if(Route::is('mycredits')) active @endif" aria-current="page" href="{{ route('mycredits') }}">My Credits</a>
             </li> --}}
@@ -83,14 +85,21 @@
                 <a class="dropdown-item" href="{{ route('myaccount') }}">
                   {{ __('My Account') }}
                 </a>
-                @role('superadmin')
+                @can('manage_organization_users')
+                <a class="dropdown-item" href="{{ route('myorg.index') }}">
+                  {{ __('My Organization') }}
+                </a>
+                @endcan
+                @can('manage_users')
                 <a class="dropdown-item" href="{{ route('users.index') }}">
                   {{ __('User Management') }}
                 </a>
+                @endcan
+                @can('manage_organizations')
                 <a class="dropdown-item" href="{{ route('organizations.index') }}">
                   {{ __('Organization Management') }}
                 </a>
-                @endrole
+                @endcan
                 <hr class="dropdown-divider">
                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                   {{ __('Logout') }}

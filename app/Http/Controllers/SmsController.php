@@ -49,6 +49,7 @@ class SmsController extends Controller
     public function sendNow(SendSmsNowRequest $request)
     {
         $job = SendJob::create([
+            'user_id' => Auth::id(),
             'type' => 'instant',
             'bulk' => $request->bulk ? true : false,
             'message' => $request->body,
@@ -110,6 +111,7 @@ class SmsController extends Controller
         $difference = Carbon::now()->diffInSeconds($scheduled_at);
 
         $job = SendJob::create([
+            'user_id' => Auth::id(),
             'type' => 'scheduled',
             'bulk' => $request->bulk ? true : false,
             'message' => $request->body,
@@ -185,6 +187,7 @@ class SmsController extends Controller
         ]);
 
         $job = SendJob::create([
+            'user_id' => Auth::id(),
             'type' => 'instant',
             'bulk' => true,
             'message' => $request->body,
@@ -241,6 +244,7 @@ class SmsController extends Controller
     public function bulkSendLater(Request $request)
     {
         $job = SendJob::create([
+            'user_id' => Auth::id(),
             'type' => 'instant',
             'bulk' => true,
             'message' => $request->body,
