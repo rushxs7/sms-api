@@ -55,6 +55,18 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/my-account/save-personal-info', [AccountController::class, 'savePersonalInfo'])->name('myaccount.savepersonalinfo');
     Route::post('/my-account/save-sender-info', [AccountController::class, 'saveSenderInfo'])->name('myaccount.savesenderinfo');
     Route::post('/my-account/password-reset', [AccountController::class, 'passwordReset'])->name('myaccount.passwordreset');
+
+    Route::prefix('/my-organization')->group(function () {
+        Route::middleware('permission:manage_organization_users')->group(function () {
+            Route::get('/', [AccountController::class, 'myOrganization'])->name('myorg.index');
+            Route::post('/users/new', [AccountController::class, 'newOrgUser'])->name('myorg.users.new');
+            Route::get('/users/{user}/edit', [AccountController::class, 'editOrgUser'])->name('myorg.users.edit');
+            Route::put('/users/{user}/update', [AccountController::class, 'updateOrgUser'])->name('myorg.users.update');
+            Route::put('/users/{user}/updatePassword', [AccountController::class, 'updateOrgUserPassword'])->name('myorg.users.updatepassword');
+            Route::delete('/users/{user}/delete', [AccountController::class, 'deleteOrgUser'])->name('myorg.users.delete');
+        });
+    });
+
     // API Keys
 
     Route::get('/my-credits', [AccountController::class, 'myCredits'])->name('mycredits');
@@ -62,7 +74,7 @@ Route::middleware(['auth'])->group(function() {
     // Finances out
 
 
-    Route::middleware(['role:admin'])->group(function() {
+    Route::middleware(['role:superadmin'])->group(function() {
         Route::resource('/users', UserController::class)->except(['show', 'create']);
         Route::put('/users/{user}/updatepassword', [UserController::class, 'updatePassword'])->name('users.updatepassword');
         Route::put('/users/{user}/updatedefaultsender', [UserController::class, 'updateDefaultSender'])->name('users.updatedefaultsender');

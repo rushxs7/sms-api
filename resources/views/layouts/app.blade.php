@@ -83,7 +83,7 @@
                 <a class="dropdown-item" href="{{ route('myaccount') }}">
                   {{ __('My Account') }}
                 </a>
-                @role('admin')
+                @role('superadmin')
                 <a class="dropdown-item" href="{{ route('users.index') }}">
                   {{ __('User Management') }}
                 </a>

@@ -69,6 +69,77 @@ class AccountController extends Controller
         return Redirect::back()->with('success', 'Password was updated successfully.');
     }
 
+    public function myOrganization(Request $request)
+    {
+        $orgUsers = User::where('organization_id', Auth::user()->organization_id)
+            ->paginate(10);
+
+        return view('myorganization', ['orgUsers' => $orgUsers]);
+    }
+
+    public function newOrgUser(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:6|confirmed',
+            'role' => 'required|in:orgadmin,default'
+        ]);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'organization_id' => Auth::user()->organization_id
+        ]);
+
+        return Redirect::route('myorg.index')->with('success', 'New organization user created successfully.');
+    }
+
+    public function editOrgUser(Request $request, User $user)
+    {
+        return view('users.orgedit', ['user' => $user]);
+    }
+
+    public function updateOrgUser(Request $request, User $user)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'role' => 'required|in:orgadmin,default'
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+
+        $user->syncRoles([$user->role]);
+
+        return Redirect::back()->with(['success' => 'Updated organization user successfully.']);
+    }
+
+    public function updateOrgUserPassword(Request $request, User $user)
+    {
+        $request->validate([
+            'password' => 'required|min:6|confirmed'
+        ]);
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return Redirect::back()->with(['success' => 'Updated organization user password successfully.']);
+    }
+
+    public function deleteOrgUser(Request $request, User $user)
+    {
+        if (Auth::id() == $user->id) {
+            $user->delete();
+            return Redirect::back()->with('success', 'Deleted organization user successfully.');
+        }
+
+        return Redirect::back();
+    }
+
     public function createToken(Request $request)
     {
         $request->validate([

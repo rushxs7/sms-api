@@ -9,6 +9,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Faker\Factory as Faker;
+use Spatie\Permission\Models\Permission;
 
 class UserSeeder extends Seeder
 {
@@ -19,8 +20,21 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'default']);
+        $superAdmin = Role::create(['name' => 'superadmin']);
+        $orgAdmin = Role::create(['name' => 'orgadmin']);
+        $default = Role::create(['name' => 'default']);
+
+        Permission::create(['name' => 'manage_users']);
+        Permission::create(['name' => 'manage_organizations']);
+        Permission::create(['name' => 'manage_organization_users']);
+        Permission::create(['name' => 'manage_organization_sender']);
+
+        $superAdmin->givePermissionTo('manage_users');
+        $superAdmin->givePermissionTo('manage_organizations');
+
+        $orgAdmin->givePermissionTo('manage_organization_users');
+        $orgAdmin->givePermissionTo('manage_organization_sender');
+
         $datasurOrg = Organization::where('name', 'Datasur')->first();
 
         $faker = Faker::create();
@@ -31,7 +45,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('datasur123'),
             'organization_id' => $datasurOrg->id,
         ]);
-        $user->assignRole('admin');
+        $user->assignRole('superadmin');
 
 
         if (env("APP_ENV") != "production") {
