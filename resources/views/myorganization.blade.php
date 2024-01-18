@@ -33,7 +33,7 @@
 
   <div class="row mb-4">
     <div class="col-3">
-      <h4 class="ps-2 pt-3">Organization User Management</h4>
+      <h4 class="ps-2 pt-3">Organization User Management ({{ Auth::user()->organizations->name }})</h4>
       <hr>
       <button class="btn btn-primary d-block" data-bs-toggle="modal" data-bs-target="#createUserModal">
         <i class="fa-solid fa-plus"></i>
@@ -46,7 +46,6 @@
           <table class="table">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Name<br /> / Organization</th>
                 <th>Email</th>
                 <th>Role</th>
@@ -56,7 +55,6 @@
             <tbody>
               @forelse ($orgUsers as $user)
               <tr>
-                <td>#{{ $user->id }}</td>
                 <td>
                   <strong>{{ $user->name }}</strong><br />
                   {{ $user->organizations->name }}
@@ -95,7 +93,7 @@
               </tr>
               @empty
               <tr>
-                <td colspan="5">No users</td>
+                <td colspan="4">No users</td>
               </tr>
               @endforelse
             </tbody>
@@ -114,7 +112,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action="{{ route('users.store') }}" method="post" autocomplete="off">
+        <form action="{{ route('myorg.users.store') }}" method="post" autocomplete="off">
           @csrf
           <div class="row mb-3">
             <label for="name" class="col-sm-3 col-form-label">Name</label>

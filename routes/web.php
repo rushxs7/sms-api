@@ -59,7 +59,7 @@ Route::middleware(['auth'])->group(function() {
     Route::prefix('/my-organization')->group(function () {
         Route::middleware('permission:manage_organization_users')->group(function () {
             Route::get('/', [AccountController::class, 'myOrganization'])->name('myorg.index');
-            Route::post('/users/new', [AccountController::class, 'newOrgUser'])->name('myorg.users.new');
+            Route::post('/users/new', [AccountController::class, 'newOrgUser'])->name('myorg.users.store');
             Route::get('/users/{user}/edit', [AccountController::class, 'editOrgUser'])->name('myorg.users.edit');
             Route::put('/users/{user}/update', [AccountController::class, 'updateOrgUser'])->name('myorg.users.update');
             Route::put('/users/{user}/updatePassword', [AccountController::class, 'updateOrgUserPassword'])->name('myorg.users.updatepassword');

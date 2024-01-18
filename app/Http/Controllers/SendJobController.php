@@ -29,7 +29,9 @@ class SendJobController extends Controller
     {
         $orgUserCollection = User::where('organization_id', Auth::user()->organization_id)->get()->pluck('id')->toArray();
 
-        $sendJobs = SendJob::whereIn('user_id', $orgUserCollection)
+        $sendJobs = SendJob::when(!Auth::user()->hasRole('superadmin'), function ($query) use ($orgUserCollection) {
+                $query->whereIn('user_id', $orgUserCollection);
+            })
             ->with('messages')
             ->latest()
             ->paginate(12);
